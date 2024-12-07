@@ -20,31 +20,32 @@ class GUI: JFrame() {
         add(JPanel())
         val forward = JButton("A")
         forward.addActionListener {
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/angle", 0)
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/run/target", 100, 360)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/angle", 0)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/run/target", 100, 360)
         }
         add(forward)
 
         add(JPanel())
         val left = JButton("<")
         left.addActionListener {
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/angle", 0)
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/multirun/target", 100, 200, -200)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/angle", 0)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/multirun/target", 100, 200, -200)
         }
         add(left)
+
         add(JPanel())
         val right = JButton(">")
         right.addActionListener {
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/angle", 0)
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/multirun/target", 100, -200, 200)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/angle", 0)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/multirun/target", 100, -200, 200)
         }
         add(right)
+        
         add(JPanel())
-
         val back = JButton("V")
         back.addActionListener {
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/angle", 0)
-            OSCSender("192.168.178.255", 9001).send("/mazer/motor/ab/run/target", -100, -360)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/angle", 0)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/ab/run/target", -100, -360)
         }
         add(back)
 
