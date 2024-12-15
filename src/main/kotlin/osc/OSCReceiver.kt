@@ -41,6 +41,7 @@ object OSCReceiver {
     }
 
     private fun newMessage(path: String, args: List<Any>) {
+        println(path+args)
         log(path, "${args}")
     }
 }
