@@ -59,36 +59,42 @@ class GUI: JFrame() {
         val turnHead = JButton("*")
         turnHead.addActionListener{
 
-
+            var distance: Int = 0
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/run/target", 1000, 92)
+            println("rechts")
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
-            OSCSender("192.168.178.255", 9001).send("/robot/touch/s4/")
             OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
-            Thread.sleep(1500)
-
-            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
-            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/run/target", 1000, 92)
-            Thread.sleep(1500)
-            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
-            OSCSender("192.168.178.255", 9001).send("/robot/touch/s4/")
-            OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
+            distance = oscreceiver.returnData()
+            println(distance)
             Thread.sleep(1500)
 
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/run/target", 1000, 92)
+            println("hinten")
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
-            OSCSender("192.168.178.255", 9001).send("/robot/touch/s4/")
             OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
+            distance = oscreceiver.returnData()
+            println(distance)
+            Thread.sleep(1500)
+
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/run/target", 1000, 92)
+            println("links")
+            Thread.sleep(1500)
+            OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
+            OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
+            distance = oscreceiver.returnData()
+            println(distance)
             Thread.sleep(1500)
 
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/run/target", 1000,-272)
+            println("vorne")
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
-            OSCSender("192.168.178.255", 9001).send("/robot/touch/s4/")
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/angle", 0)
 
 

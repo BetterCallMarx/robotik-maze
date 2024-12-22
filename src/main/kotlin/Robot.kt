@@ -8,25 +8,20 @@ TODO: Vielleicht homogene kooridaten in betracht ziehen
 TODO: Je mehr informationen desto mehr certainty, eventuell für lokalisierung odometrische und entfernungssensor
 TODO: Beim zurückfahren least squares slam verwenden um error zwischen poses zu minimieren
  */
+
+
+//TODO für jeden Befehl eine Funktion
 class Robot {
     //Direction Robot is facing
     lateinit var direction: Direction
+    val ultraSonicPort: String = ""
 
-    fun turnHead(){
-        //TODO
-    }
-
-    fun localization(){
+    init {
 
     }
 
-    fun taskPlanning(){
 
-    }
 
-    fun pathPlanning(){
-
-    }
 
 
 }

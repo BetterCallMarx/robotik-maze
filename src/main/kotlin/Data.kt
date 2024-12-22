@@ -1,0 +1,1 @@
+data class Data(var distance: Int, var color: String, var touched: Boolean)
