@@ -15,7 +15,7 @@ object OSCReceiver {
     var port: Int = -1
         private set
     private lateinit var receiver: OSCPortIn
-
+    lateinit var data: Data
     fun start(port: Int = 9001) {
         receiver = OSCPortIn(port)
         receiver.dispatcher.addListener(
@@ -46,35 +46,31 @@ object OSCReceiver {
     }
 
     private var usDistance: Int = 0
-    fun setData(data: Int){
-        usDistance = data
-    }
 
-    fun returnData(): Int{
-        return usDistance
+    fun returnData(): Data{
+        return data
     }
 
 
     private fun newMessage(path: String, args: List<Any>) {
-        var ultraSonicSensorDistance: Int? = null
-        var colorSensorColor: String? = null
-        var touchSensorTouched: Boolean? = null
+        var ultraSonicSensorDistance: Int?
+        val colorSensorColor: String?
+        val touchSensorTouched: Boolean?
 
         when {
             path.startsWith("/robot/ultrasonic/s1/distance/is") -> {
                 ultraSonicSensorDistance = (args.lastOrNull() as? Int) ?: 0
-                setData(ultraSonicSensorDistance)
-                println("Ultrasonic Distance: $ultraSonicSensorDistance")
+                data.distance = ultraSonicSensorDistance
             }
 
             path.startsWith("/robot/color/s4/is") -> {
                 colorSensorColor = (args.lastOrNull() as? String) ?: ""
-                println("color Distance: $colorSensorColor")
+                data.color = colorSensorColor
             }
 
             path.startsWith("/robot/ultrasonic/s3/distance/is") -> {
                 touchSensorTouched = (args.lastOrNull() as? Boolean) ?: false
-                println("Touch: $touchSensorTouched")
+                data.touched = touchSensorTouched
             }
 
             else -> {

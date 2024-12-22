@@ -66,7 +66,7 @@ class GUI: JFrame() {
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
             OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
-            distance = oscreceiver.returnData()
+            //distance = oscreceiver.returnData()
             println(distance)
             Thread.sleep(1500)
 
@@ -76,7 +76,7 @@ class GUI: JFrame() {
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
             OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
-            distance = oscreceiver.returnData()
+            //distance = oscreceiver.returnData()
             println(distance)
             Thread.sleep(1500)
 
@@ -86,7 +86,7 @@ class GUI: JFrame() {
             Thread.sleep(1500)
             OSCSender("192.168.178.255", 9001).send("/robot/motor/c/stop")
             OSCSender("192.168.178.255", 9001).send("/robot/ultrasonic/s1/distance")
-            distance = oscreceiver.returnData()
+            //distance = oscreceiver.returnData()
             println(distance)
             Thread.sleep(1500)
 
