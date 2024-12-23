@@ -1,6 +1,7 @@
 package de.fhkiel.rob.legoosctester.osc
 
 import Data
+import Robot
 import com.illposed.osc.MessageSelector
 import com.illposed.osc.OSCMessageEvent
 import com.illposed.osc.transport.OSCPortIn
@@ -15,7 +16,8 @@ object OSCReceiver {
     var port: Int = -1
         private set
     private lateinit var receiver: OSCPortIn
-    lateinit var data: Data
+    private var data: Data = Data()
+    private var robot: Robot = Robot()
     fun start(port: Int = 9001) {
         receiver = OSCPortIn(port)
         receiver.dispatcher.addListener(
@@ -58,17 +60,17 @@ object OSCReceiver {
         val touchSensorTouched: Boolean?
 
         when {
-            path.startsWith("/robot/ultrasonic/s1/distance/is") -> {
+            path.startsWith("/${robot.robotName}/ultrasonic/${robot.ultraSonicPort}/distance/is") -> {
                 ultraSonicSensorDistance = (args.lastOrNull() as? Int) ?: 0
                 data.distance = ultraSonicSensorDistance
             }
 
-            path.startsWith("/robot/color/s4/is") -> {
+            path.startsWith("/${robot.robotName}/color/${robot.colorSensorPort}/is") -> {
                 colorSensorColor = (args.lastOrNull() as? String) ?: ""
                 data.color = colorSensorColor
             }
 
-            path.startsWith("/robot/ultrasonic/s3/distance/is") -> {
+            path.startsWith("/${robot.robotName}/touch/${robot.touchSensorPort}/pressed") -> {
                 touchSensorTouched = (args.lastOrNull() as? Boolean) ?: false
                 data.touched = touchSensorTouched
             }

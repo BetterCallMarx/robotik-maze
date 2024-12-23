@@ -15,13 +15,13 @@ class Robot {
     lateinit var direction: Direction
     private var oscReceiver: OSCReceiver = OSCReceiver
     lateinit var currentData: Data
-    private val robotName: String = "robot"
-    private val ultraSonicPort: String = "s1"
-    private val colorSensorPort: String = "s3"
-    private val touchSensorPort: String = "s2"
-    private val leftMotorPort: String = "a"
-    private val rightMotorPort: String = "d"
-    private val headMotorPort: String = "c"
+    val robotName: String = "robot"
+    val ultraSonicPort: String = "s1"
+    val colorSensorPort: String = "s3"
+    val touchSensorPort: String = "s4"
+    val leftMotorPort: String = "d"
+    val rightMotorPort: String = "a"
+    val headMotorPort: String = "c"
     private val ipTarget: String = "192.168.178.255"
     private val port: Int = 9001
 
@@ -34,13 +34,11 @@ class Robot {
     fun driveForward(speed: Int, angle: Int){
         OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target",speed,angle)
-        OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/stop")
     }
     //driving the robot backward, optimal inputs for a distance of 28cm is : 100, -550
     fun driveBackward(speed: Int, angle: Int){
         OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target",speed,angle)
-        OSCSender(ipTarget,port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/stop")
     }
 
     //turn the Robot to the left optimal speed and angle for 90-degree turn: 100, 183, -183
@@ -74,24 +72,30 @@ class Robot {
         return oscReceiver.returnData().distance
     }
 
-    fun completeHeadTurn(){
-
-        var distanceNorth = ultraSensorDistance()
+    fun completeHeadTurn(): List<Int>{
+        val distances: MutableList<Int> = mutableListOf()
+        val distanceNorth = ultraSensorDistance()
+        distances.add(distanceNorth)
         Thread.sleep(1500)
 
         turnHead(1000,92)
-        var distanceEast = ultraSensorDistance()
+        val distanceEast = ultraSensorDistance()
+        distances.add(distanceEast)
         Thread.sleep(1500)
 
         turnHead(1000,92)
-        var distanceSouth = ultraSensorDistance()
+        val distanceSouth = ultraSensorDistance()
+        distances.add(distanceSouth)
         Thread.sleep(1500)
 
         turnHead(1000,92)
-        var distanceWest = ultraSensorDistance()
+        val distanceWest = ultraSensorDistance()
+        distances.add(distanceWest)
         Thread.sleep(1500)
 
         turnHead(1000,-272)
+
+        return distances
     }
 
 
