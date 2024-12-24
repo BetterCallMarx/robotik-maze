@@ -102,8 +102,6 @@
       <workItem from="1733999381980" duration="2732000" />
       <workItem from="1734269797400" duration="9014000" />
       <workItem from="1734882468882" duration="4573000" />
-      <workItem from="1734897290152" duration="4833000" />
-      <workItem from="1734972261416" duration="6518000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -133,15 +131,7 @@
       <option name="project" value="LOCAL" />
       <updated>1734293149033</updated>
     </task>
-    <task id="LOCAL-00005" summary="added wrapper function for basic OSC messages">
-      <option name="closed" value="true" />
-      <created>1734902476852</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1734902476852</updated>
-    </task>
-    <option name="localTasksCounter" value="6" />
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,7 +158,6 @@
     <MESSAGE value="init commit" />
     <MESSAGE value="TODO und neue files" />
     <MESSAGE value="winkel für fahren und drehen" />
-    <MESSAGE value="added wrapper function for basic OSC messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="added wrapper function for basic OSC messages" />
+    <option name="LAST_COMMIT_MESSAGE" value="winkel für fahren und drehen" />
   </component>
 </project>

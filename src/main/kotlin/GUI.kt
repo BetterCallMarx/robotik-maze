@@ -1,4 +1,5 @@
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
+import graphing.GraphFrontend
 import java.awt.Dimension
 import java.awt.GridLayout
 import javax.swing.JButton
@@ -6,14 +7,14 @@ import javax.swing.JFrame
 
 import javax.swing.JPanel
 
-class GUI: JFrame() {
+class GUI : JFrame() {
 
     val robot: Robot = Robot()
 
 
     init {
         title = "ButtonKram"
-        minimumSize =  Dimension(400, 400)
+        minimumSize = Dimension(400, 400)
         defaultCloseOperation = EXIT_ON_CLOSE
 
         val receiver: OSCReceiver = OSCReceiver
@@ -24,36 +25,36 @@ class GUI: JFrame() {
         add(JPanel())
         val forward = JButton("A")
         forward.addActionListener {
-            robot.driveForward(100,550)
+            robot.driveForward()
         }
         add(forward)
 
         add(JPanel())
         val left = JButton("<")
         left.addActionListener {
-            robot.turnLeft(100,183,-183)
+            robot.turnLeft()
         }
         add(left)
 
         add(JPanel())
         val right = JButton(">")
         right.addActionListener {
-            robot.turnRight(100,-183,183)
+            robot.turnRight()
         }
         add(right)
-        
+
         add(JPanel())
         val back = JButton("V")
         back.addActionListener {
-            robot.driveBackward(100,-550)
+            robot.driveBackward()
         }
         add(back)
 
         add(JPanel())
         val turnHead = JButton("*")
-        turnHead.addActionListener{
+        turnHead.addActionListener {
             val distances: List<Int> = robot.completeHeadTurn()
-            val string : String = GraphFrontend.createTile(distances)
+            val string: String = GraphFrontend.createTile(distances)
             println(string)
         }
         add(turnHead)

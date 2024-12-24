@@ -5,9 +5,7 @@ import Robot
 import com.illposed.osc.MessageSelector
 import com.illposed.osc.OSCMessageEvent
 import com.illposed.osc.transport.OSCPortIn
-import de.fhkiel.rob.legoosctester.gui.Incoming.log
 import kotlin.concurrent.thread
-
 
 
 //TODO Data class member variable welche mittels getter und setter
@@ -49,7 +47,7 @@ object OSCReceiver {
 
     private var usDistance: Int = 0
 
-    fun returnData(): Data{
+    fun returnData(): Data {
         return data
     }
 
@@ -75,8 +73,14 @@ object OSCReceiver {
                 data.touched = touchSensorTouched
             }
 
+            path.startsWith("/${robot.robotName}/touch/${robot.touchSensorPort}/changed/pressed") -> {
+                touchSensorTouched = (args.lastOrNull() as? Boolean) ?: false
+                data.touched = touchSensorTouched
+            }
+
+
             else -> {
-               // println("Unknown path: $path")
+                // println("Unknown path: $path")
             }
 
         }
