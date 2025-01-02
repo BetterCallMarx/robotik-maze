@@ -1,4 +1,5 @@
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
+import de.fhkiel.rob.legoosctester.osc.OSCSender
 import graphing.GraphFrontend
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -16,10 +17,6 @@ class GUI : JFrame() {
         title = "ButtonKram"
         minimumSize = Dimension(400, 400)
         defaultCloseOperation = EXIT_ON_CLOSE
-
-        val receiver: OSCReceiver = OSCReceiver
-        receiver.start()
-
 
         layout = GridLayout(3, 3)
         add(JPanel())
@@ -56,8 +53,19 @@ class GUI : JFrame() {
             val distances: List<Int> = robot.completeHeadTurn()
             val string: String = GraphFrontend.createTile(distances)
             println(string)
+            println(robot.colorSensorColor())
+            println(robot.touchSensorTouched())
+
         }
         add(turnHead)
+
+        add(JPanel())
+        val test = JButton("T")
+        test.addActionListener {
+            robot.subTouchListener()
+
+        }
+        add(test)
         isVisible = true
     }
 
