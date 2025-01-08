@@ -1,7 +1,5 @@
 package de.fhkiel.rob.legoosctester.osc
 
-import Data
-import Robot
 import com.illposed.osc.MessageSelector
 import com.illposed.osc.OSCMessageEvent
 import com.illposed.osc.transport.OSCPortIn
@@ -15,7 +13,6 @@ object OSCReceiver {
     var port: Int = -1
         private set
     private lateinit var receiver: OSCPortIn
-    private var data: Data = Data()
     fun start(port: Int = 9001) {
         synchronized(this) {
             if (this.port != -1) {

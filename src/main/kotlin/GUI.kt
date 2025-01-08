@@ -1,6 +1,8 @@
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 import de.fhkiel.rob.legoosctester.osc.OSCSender
+import enums.Direction
 import graphing.GraphFrontend
+import graphing.Tile
 import java.awt.Dimension
 import java.awt.GridLayout
 import javax.swing.JButton
@@ -22,7 +24,10 @@ class GUI : JFrame() {
         add(JPanel())
         val forward = JButton("A")
         forward.addActionListener {
+            println(GraphFrontend.currentPosition)
             robot.driveForward()
+            println(GraphFrontend.updatePosition(Pair(0,28)))
+            println(GraphFrontend.currentPosition)
         }
         add(forward)
 
@@ -50,20 +55,17 @@ class GUI : JFrame() {
         add(JPanel())
         val turnHead = JButton("*")
         turnHead.addActionListener {
-            val distances: List<Int> = robot.completeHeadTurn()
-            val string: String = GraphFrontend.createTile(distances)
-            println(string)
-            println(robot.colorSensorColor())
-            println(robot.touchSensorTouched())
-
+            val color = robot.colorSensorColor()
+            val distances: MutableList<Pair<Int,Direction>> = robot.completeHeadTurn()
+            val tile : Tile = GraphFrontend.createTile(distances,GraphFrontend.colorToEnum(color))
+            println(tile)
         }
         add(turnHead)
 
         add(JPanel())
         val test = JButton("T")
         test.addActionListener {
-            robot.subTouchListener()
-
+            robot.positionSelf()
         }
         add(test)
         isVisible = true

@@ -4,5 +4,5 @@ enum class TileColor {
     GREEN,
     BLUE,
     RED,
-    WHITE
+    NONE
 }

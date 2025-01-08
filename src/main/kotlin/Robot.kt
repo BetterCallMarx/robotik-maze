@@ -1,14 +1,12 @@
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
+import graphing.GraphFrontend
 import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
 /*
-TODO: Alle sensoren und motoren ab roboter fertig bringen
-TODO: FUnktionen zu Bewegung und Erfassung von Sensordaten
 TODO: Einfache Graph Bildung mittels odometrischen daten
-TODO: Vielleicht homogene kooridaten in betracht ziehen
 TODO: Je mehr informationen desto mehr certainty, eventuell für lokalisierung odometrische und entfernungssensor
 TODO: Beim zurückfahren least squares slam verwenden um error zwischen poses zu minimieren
 */
@@ -17,11 +15,11 @@ TODO: Beim zurückfahren least squares slam verwenden um error zwischen poses zu
 //TODO für jeden Befehl eine Funktion
 class Robot {
     lateinit var direction: Direction
-    lateinit var currentData: Data
     val robotName: String = "robot"
     val ultraSonicPort: String = "s2"
     val colorSensorPort: String = "s4"
     val touchSensorPort: String = "s1"
+    val gyroscopeSensorPort: String = "s3"
     private val leftMotorPort: String = "d"
     private val rightMotorPort: String = "a"
     private val headMotorPort: String = "c"
@@ -31,21 +29,11 @@ class Robot {
     init {
         OSCReceiver.start()
         OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/gyroscope/$gyroscopeSensorPort/angle", 0)
     }
 
 
-   /*fun resetPosition() {
-        driveForward()
-        while (!OSCReceiver.returnData().touched) {
-            Thread.sleep(100)
-        }
-        driveBackward()
-        Thread.sleep(1500)
-        turnLeft()
-        Thread.sleep(1500)
-        driveBackward()
-    }
-*/
+
 
     //driving the robot forward, optimal inputs for a distance of 28cm is : 100, 550
     fun driveForward() {
@@ -56,12 +44,26 @@ class Robot {
     //driving the robot backward, optimal inputs for a distance of 28cm is : 100, -550
     fun driveBackward() {
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 500)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100,-500)
     }
 
     fun drive(speed: Int, angle: Int) {
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+    }
+
+    fun positionSelf(){
+        var delta: Int = 0
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 250)
+        while(!touchSensorTouched()){
+            sleep(10)
+            delta += 10
+            println(delta)
+            if(delta>500){break}
+        }
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, -250)
     }
 
     //turn the Robot to the left optimal speed and angle for 90-degree turn: 100, 183, -183
@@ -73,6 +75,7 @@ class Robot {
             183,
             -183
         )
+        GraphFrontend.turnWest()
     }
 
     //turn the Robot to the right optimal speed and angle for a 90-degree turn: 100, -183, 183
@@ -84,6 +87,7 @@ class Robot {
             -183,
             183
         )
+        GraphFrontend.turnEast()
     }
 
     fun turn(speed: Int, angle: Int, angle1: Int) {
@@ -98,7 +102,6 @@ class Robot {
 
     //one headturn
     private fun turnHead(speed: Int, angle: Int) {
-        println("debug")
         var turned: Boolean = false
         val path: String = "/$robotName/motor/$headMotorPort/reached/target"
         OSCReceiver.subListener(path
@@ -119,17 +122,31 @@ class Robot {
 
     fun colorSensorColor(): String {
         var color : String = ""
-        val path: String = "/$robotName/color/$touchSensorPort/is"
+        val path: String = "/$robotName/color/$colorSensorPort/is"
         OSCReceiver.subListener(path
         ) {
             color = it[0] as String
             OSCReceiver.unsubListener(path)
         }
         OSCSender(ipTarget, port).send("/$robotName/color/$colorSensorPort")
-        while(color.isNotBlank()){
+        while(color.isBlank()){
             sleep(10)
         }
         return color
+    }
+
+    fun gyroscopeSensorDegree(): Int{
+        var degree: Int = 361
+        val path: String = "/$robotName/gyroscope/$gyroscopeSensorPort/angle/is"
+        OSCReceiver.subListener(path){
+            degree = it[0] as Int
+            OSCReceiver.unsubListener(path)
+        }
+        OSCSender(ipTarget, port).send("/$robotName/gyroscope/$gyroscopeSensorPort/angle")
+        while(degree>360){
+            sleep(10)
+        }
+        return degree
     }
 
     fun touchSensorTouched(): Boolean {
@@ -166,23 +183,23 @@ class Robot {
 
 
 
-    fun completeHeadTurn(): List<Int> {
-        val distances: MutableList<Int> = mutableListOf()
-        val distanceNorth = ultraSensorDistance()
-        distances.add(distanceNorth)
+    fun completeHeadTurn(): MutableList<Pair<Int,Direction>> {
+        val distances: MutableList<Pair<Int,Direction>> = mutableListOf()
 
+        val distanceNorth = ultraSensorDistance()
+        distances.add(Pair(distanceNorth,Direction.NORTH))
 
         turnHead(1000, 90)
         val distanceEast = ultraSensorDistance()
-        distances.add(distanceEast)
+        distances.add(Pair(distanceEast,Direction.EAST))
 
         turnHead(1000, 180)
         val distanceSouth = ultraSensorDistance()
-        distances.add(distanceSouth)
+        distances.add(Pair(distanceSouth,Direction.SOUTH))
 
         turnHead(1000, -90)
         val distanceWest = ultraSensorDistance()
-        distances.add(distanceWest)
+        distances.add(Pair(distanceWest,Direction.WEST))
         turnHead(1000, 0)
 
         return distances
