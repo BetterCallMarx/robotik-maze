@@ -1,3 +1,4 @@
+import GUI.GUI
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 
 const val DEBUG: Boolean = false
