@@ -1,4 +1,0 @@
-package graphing
-
-class GraphBackend {
-}

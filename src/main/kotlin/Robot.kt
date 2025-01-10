@@ -5,21 +5,16 @@ import graphing.GraphFrontend
 import java.lang.Thread.sleep
 import kotlin.concurrent.thread
 
-/*
-TODO: Einfache Graph Bildung mittels odometrischen daten
-TODO: Je mehr informationen desto mehr certainty, eventuell für lokalisierung odometrische und entfernungssensor
-TODO: Beim zurückfahren least squares slam verwenden um error zwischen poses zu minimieren
-*/
 
 
 //TODO für jeden Befehl eine Funktion
 class Robot {
     lateinit var direction: Direction
-    val robotName: String = "robot"
-    val ultraSonicPort: String = "s2"
-    val colorSensorPort: String = "s4"
-    val touchSensorPort: String = "s1"
-    val gyroscopeSensorPort: String = "s3"
+    private val robotName: String = "robot"
+    private val ultraSonicPort: String = "s2"
+    private val colorSensorPort: String = "s4"
+    private val touchSensorPort: String = "s1"
+    private val gyroscopeSensorPort: String = "s3"
     private val leftMotorPort: String = "d"
     private val rightMotorPort: String = "a"
     private val headMotorPort: String = "c"

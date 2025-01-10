@@ -4,18 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="interne welt darstellung eingebaut, und erste funktionalitäten von tiles und bewegen">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/PairArithmetic.kt" afterDir="false" />
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="idk">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Data.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/DataSingleton.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/GUI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/enums/TileColor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/enums/TileColor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/State.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphBackend.kt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/Node.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Node.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/PairArithmetic.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/PairArithmetic.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/Tile.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Tile.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/osc/OSCReceiver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/osc/OSCReceiver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/TreeGraph.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +154,7 @@
       <workItem from="1736031898482" duration="452000" />
       <workItem from="1736086017145" duration="9600000" />
       <workItem from="1736189232644" duration="7519000" />
-      <workItem from="1736344329804" duration="421000" />
+      <workItem from="1736344329804" duration="12223000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -193,7 +192,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735834949819</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="idk">
+      <option name="closed" value="true" />
+      <created>1736345380701</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736345380701</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -222,6 +229,7 @@
     <MESSAGE value="winkel für fahren und drehen" />
     <MESSAGE value="struktur zum erhalten von osc nachrichten gefixed" />
     <MESSAGE value="interne welt darstellung eingebaut, und erste funktionalitäten von tiles und bewegen" />
-    <option name="LAST_COMMIT_MESSAGE" value="interne welt darstellung eingebaut, und erste funktionalitäten von tiles und bewegen" />
+    <MESSAGE value="idk" />
+    <option name="LAST_COMMIT_MESSAGE" value="idk" />
   </component>
 </project>

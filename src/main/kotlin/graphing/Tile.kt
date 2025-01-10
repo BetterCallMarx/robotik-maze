@@ -8,7 +8,7 @@ class Tile(
     val southOpen: Boolean,
     val westOpen: Boolean,
     val color: TileColor,
-    val coord: Pair<Int,Int>
+    val coordinates: Pair<Int,Int>
 ) {
     //whether an opening has been visited or not
     var northVisited: Boolean = false
@@ -16,5 +16,13 @@ class Tile(
     var southVisited: Boolean = false
     var westVisited: Boolean = false
 
+    fun printTile(){
+        println(northOpen)
+        println(eastOpen)
+        println(southOpen)
+        println(westOpen)
+        println(color)
+        println(coordinates)
+    }
 
 }

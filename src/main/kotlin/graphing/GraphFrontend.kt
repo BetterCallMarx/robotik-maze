@@ -19,15 +19,15 @@ object GraphFrontend {
     TODO relative auf absolute Position der Wand wir mittels offset erhalten
     */
 
-    val startPosition: Pair<Int,Int> = Pair(0,0)
+    private val startPosition: Pair<Int,Int> = Pair(0,-30) //robot start at position 0,-30
     private val facingNorth : Pair<Direction,Pair<Int,Int>> = Pair(Direction.NORTH,Pair(0,1))
     private val facingWest : Pair<Direction,Pair<Int,Int>> = Pair(Direction.WEST,Pair(-1,0))
     private val facingSouth : Pair<Direction,Pair<Int,Int>> = Pair(Direction.SOUTH,Pair(0,-1))
     private val facingEast : Pair<Direction,Pair<Int,Int>> = Pair(Direction.EAST,Pair(1,0))
     private val directions = listOf(facingNorth, facingEast, facingSouth, facingWest)
-    private var facing = facingNorth
-    var lastPosition : Pair<Int,Int> = Pair(0,0)
-    var currentPosition: Pair<Int,Int> = Pair(0,0)
+    var facing = facingNorth //robot starts facing north
+    var visitedPositions : MutableList<Pair<Int,Int>> = mutableListOf() //add position of tile to lastPosition to keep track of visited tiles and get last one
+    var currentPosition: Pair<Int,Int> = startPosition
 
     fun createTile(distances:MutableList<Pair<Int,Direction>>,color: TileColor): Tile {
         //adjust relative Direction to absolute direction
@@ -50,6 +50,11 @@ object GraphFrontend {
         return Tile(walls[0],walls[1],walls[2],walls[3],color, currentPosition)
     }
 
+    fun getInverseDirection(): Direction{
+        val currentIndex = directions.indexOf(facing)
+        return directions[(currentIndex+2) % directions.size].first
+    }
+
     private fun getAbsoluteDirection(headDirection: Direction):Direction{
         val currentIndex = directions.indexOf(facing)
 
@@ -63,8 +68,9 @@ object GraphFrontend {
         }
     }
 
+
     fun updatePosition(odometry : Pair<Int,Int>){
-        val distance = PairArithmetic.multiply(facingNorth.second,odometry)
+        val distance = PairArithmetic.multiply(facing.second,odometry)
         currentPosition = PairArithmetic.add(distance, currentPosition)
     }
     fun turnWest() {
@@ -87,6 +93,7 @@ object GraphFrontend {
             else -> TileColor.NONE
         }
     }
+
 
 
 
