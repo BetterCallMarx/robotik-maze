@@ -111,6 +111,8 @@ class Robot {
 
     //one headturn
     private fun turnHead(speed: Int, angle: Int) {
+        val start = System.currentTimeMillis()
+        val timeout = 5000L
         var turned: Boolean = false
         val path: String = "/$robotName/motor/$headMotorPort/reached/target"
         OSCReceiver.subListener(path
@@ -123,10 +125,12 @@ class Robot {
             }
         }
         OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
-        while(!turned){
+        while(!turned && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
-
+        if(!turned){
+            println("Kopf konnte nicht zu $angle gedreht werden, versuche es erneut")
+        }
     }
 
     fun colorSensorColor(): String {

@@ -2,8 +2,10 @@ package gui
 
 import graphing.Tile
 import enums.TileColor
+import graphing.GraphFrontend
 import java.awt.*
 import javax.swing.JPanel
+import javax.swing.Timer
 
 class MazePanel : JPanel() {
     private val rooms = mutableListOf<Room>()
@@ -12,6 +14,8 @@ class MazePanel : JPanel() {
 
     init {
         background = Color(255, 255, 255) // White background
+        val timer = Timer(100) { repaint() } // Repaints every 50 milliseconds
+        timer.start()
     }
 
     fun addTile(tile: Tile) {
@@ -40,6 +44,7 @@ class MazePanel : JPanel() {
         for (room in rooms) {
             drawTile(g2, room.position, room.color, room.walls)
         }
+        drawStatusText(g2)
     }
 
     private fun drawTile(g: Graphics2D, position: Pair<Int, Int>, color: TileColor, walls: List<Boolean>) {
@@ -79,6 +84,20 @@ class MazePanel : JPanel() {
             g.fillRect(x - wallThickness, y + gridSize, wallThickness, wallThickness)
         }
     }
+    private fun drawStatusText(g: Graphics2D) {
+        // Set font and color
+        g.color = Color.BLACK
+        g.font = Font("Arial", Font.BOLD, 16)
+
+        // Text for current position and facing
+        val positionText = "Position: ${GraphFrontend.currentPosition}"
+        val facingText = "Facing: ${GraphFrontend.facing}"
+
+        // Draw the text at the upper left corner
+        g.drawString(positionText, 10, 20)
+        g.drawString(facingText, 10, 40)
+    }
+
 
     data class Room(val color: TileColor, val walls: List<Boolean>, val position: Pair<Int, Int>)
 }

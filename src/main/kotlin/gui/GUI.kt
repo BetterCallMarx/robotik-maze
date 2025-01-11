@@ -98,18 +98,39 @@ class GUI : JFrame() {
                     tile
                 )
             }
+            Tree.printTree()
         }
         panel.add(turnHead)
 
-        val test = JButton("T")
+        val test = JButton("Test")
         test.addActionListener {
             println("Test button pressed")
-            mazePanel.addTile(Tile(false,false,false,false, TileColor.RED,Pair(0,0)))
-            mazePanel.addTile(Tile(false,false,false,false, TileColor.RED,Pair(-30,0)))
-            mazePanel.addTile(Tile(false,false,false,false, TileColor.RED,Pair(0,30)))
-            mazePanel.addTile(Tile(false,false,false,false, TileColor.RED,Pair(30,0)))
+            val root =Tile(false,true,false,true, TileColor.RED,Pair(0,0))
+            val tile1 = Tile(true,false,false,true, TileColor.RED,Pair(30,0))
+            val tile2 = Tile(true,false,true,false, TileColor.RED,Pair(30,30))
+            val tile3 = Tile(true,false,true,false, TileColor.RED,Pair(30,60))
+
+            Tree.addRoot(root)
+            Tree.addTileToTile(tile1.coordinates,root.coordinates,Direction.SOUTH,tile1)
+            Tree.addTileToTile(tile2.coordinates,tile1.coordinates,Direction.WEST,tile2)
+            Tree.addTileToTile(tile3.coordinates,tile2.coordinates,Direction.SOUTH,tile3)
+
+            mazePanel.addTile(root)
+            mazePanel.addTile(tile1)
+            mazePanel.addTile(tile2)
+            mazePanel.addTile(tile3)
+            val path = Tree.findShortestPathToRoot(tile3.coordinates)
+            println(path)
+
         }
         panel.add(test)
+
+        val tree = JButton("Tree")
+        tree.addActionListener {
+            val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
+            println(path)
+        }
+        panel.add(tree)
     }
 }
 
