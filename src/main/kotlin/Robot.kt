@@ -3,8 +3,6 @@ import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
 import graphing.GraphFrontend
 import java.lang.Thread.sleep
-import kotlin.concurrent.thread
-
 
 
 //TODO für jeden Befehl eine Funktion
@@ -33,18 +31,34 @@ class Robot {
     //driving the robot forward, optimal inputs for a distance of 28cm is : 100, 550
     fun driveForward() {
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 500)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 612)
     }
 
     //driving the robot backward, optimal inputs for a distance of 28cm is : 100, -550
     fun driveBackward() {
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100,-500)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100,-612)
     }
 
     fun drive(speed: Int, angle: Int) {
+        var driven: Boolean = false
+        val path: String = "/$robotName/motor/$rightMotorPort$leftMotorPort/reached/target"
+        OSCReceiver.subListener(path
+        ) {
+            if(it[0] as Int == angle){
+                driven = true
+                OSCReceiver.unsubListener(path)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+            }
+        }
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+        while(!driven){
+            sleep(100)
+        }
+
     }
 
     fun positionSelf(){
@@ -116,6 +130,8 @@ class Robot {
     }
 
     fun colorSensorColor(): String {
+        val start = System.currentTimeMillis()
+        val timeout = 5000L
         var color : String = ""
         val path: String = "/$robotName/color/$colorSensorPort/is"
         OSCReceiver.subListener(path
@@ -124,27 +140,17 @@ class Robot {
             OSCReceiver.unsubListener(path)
         }
         OSCSender(ipTarget, port).send("/$robotName/color/$colorSensorPort")
-        while(color.isBlank()){
+        while(color.isBlank() && System.currentTimeMillis() - start < timeout){
             sleep(10)
+        }
+        if(color.isBlank()){
+            println("Farbe konnte nicht erfasst werden")
+            return ""
         }
         return color
     }
 
-    fun gyroscopeSensorDegree(): Int{
-        var degree: Int = 361
-        val path: String = "/$robotName/gyroscope/$gyroscopeSensorPort/angle/is"
-        OSCReceiver.subListener(path){
-            degree = it[0] as Int
-            OSCReceiver.unsubListener(path)
-        }
-        OSCSender(ipTarget, port).send("/$robotName/gyroscope/$gyroscopeSensorPort/angle")
-        while(degree>360){
-            sleep(10)
-        }
-        return degree
-    }
-
-    fun touchSensorTouched(): Boolean {
+    private fun touchSensorTouched(): Boolean {
         var touched : Boolean = false
         var measured: Boolean = false
         val path: String = "/$robotName/touch/$touchSensorPort/pressed"
@@ -162,16 +168,28 @@ class Robot {
     }
 
     private fun ultraSensorDistance(): Int {
-        var distance : Int = -1
-        val path: String = "/$robotName/ultrasonic/${ultraSonicPort}/distance/is"
-        OSCReceiver.subListener(path
-        ) {
-            distance = it[0] as Int
-            OSCReceiver.unsubListener(path)
-        }
-        OSCSender(ipTarget, port).send("/$robotName/ultrasonic/$ultraSonicPort/distance")
-        while(distance<0){
-            sleep(10)
+        var distance: Int = -1
+        try {
+            val timeout = 5000L
+            val start = System.currentTimeMillis()
+            val path: String = "/$robotName/ultrasonic/${ultraSonicPort}/distance/is"
+            OSCReceiver.subListener(
+                path
+            ) {
+                distance = it[0] as Int
+                OSCReceiver.unsubListener(path)
+            }
+            OSCSender(ipTarget, port).send("/$robotName/ultrasonic/$ultraSonicPort/distance")
+            while (distance < 0 && System.currentTimeMillis() - start < timeout) {
+                sleep(10)
+            }
+            if(distance<0){
+                println("Error")
+                return -1
+            }
+        }catch (e: Exception){
+            println("error")
+            return -1
         }
         return distance
     }
@@ -180,22 +198,31 @@ class Robot {
 
     fun completeHeadTurn(): MutableList<Pair<Int,Direction>> {
         val distances: MutableList<Pair<Int,Direction>> = mutableListOf()
+        try {
+            val distanceNorth = ultraSensorDistance()
+            if (distanceNorth == -1) throw Exception("Ultrasonic sensor failed to read distance for NORTH.")
+            distances.add(Pair(distanceNorth, Direction.NORTH))
 
-        val distanceNorth = ultraSensorDistance()
-        distances.add(Pair(distanceNorth,Direction.NORTH))
+            turnHead(1000, 90)
+            val distanceEast = ultraSensorDistance()
+            if (distanceEast == -1) throw Exception("Ultrasonic sensor failed to read distance for WEST.")
+            distances.add(Pair(distanceEast, Direction.EAST))
 
-        turnHead(1000, 90)
-        val distanceEast = ultraSensorDistance()
-        distances.add(Pair(distanceEast,Direction.EAST))
+            turnHead(1000, 180)
+            val distanceSouth = ultraSensorDistance()
+            if (distanceSouth == -1) throw Exception("Ultrasonic sensor failed to read distance for SOUTH.")
+            distances.add(Pair(distanceSouth, Direction.SOUTH))
 
-        turnHead(1000, 180)
-        val distanceSouth = ultraSensorDistance()
-        distances.add(Pair(distanceSouth,Direction.SOUTH))
-
-        turnHead(1000, -90)
-        val distanceWest = ultraSensorDistance()
-        distances.add(Pair(distanceWest,Direction.WEST))
-        turnHead(1000, 0)
+            turnHead(1000, -90)
+            val distanceWest = ultraSensorDistance()
+            if (distanceWest == -1) throw Exception("Ultrasonic sensor failed to read distance for WEST.")
+            distances.add(Pair(distanceWest, Direction.WEST))
+            turnHead(1000, 0)
+        }catch (e: Exception){
+            println("Error during head turn: ${e.message}")
+            turnHead(1000,0)
+            println("Führen sie die Aktion erneut aus")
+        }
 
         return distances
     }

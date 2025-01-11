@@ -1,5 +1,4 @@
-import GUI.GUI
-import de.fhkiel.rob.legoosctester.osc.OSCReceiver
+import gui.GUI
 
 const val DEBUG: Boolean = false
 fun main(args: Array<String>) {

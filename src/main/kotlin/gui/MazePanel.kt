@@ -4,8 +4,6 @@ import graphing.Tile
 import enums.TileColor
 import java.awt.*
 import javax.swing.JPanel
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseEvent
 
 class MazePanel : JPanel() {
     private val rooms = mutableListOf<Room>()
@@ -14,16 +12,6 @@ class MazePanel : JPanel() {
 
     init {
         background = Color(255, 255, 255) // White background
-
-        addMouseListener(object : MouseAdapter() {
-            override fun mousePressed(e: MouseEvent) {
-                val tile1 = Tile(true, true, false, false, TileColor.NONE, Pair(0, 0))
-                val tile2 = Tile(false, false, true, true, TileColor.GREEN, Pair(-1, 0))
-
-                addTile(tile1)
-                addTile(tile2)
-            }
-        })
     }
 
     fun addTile(tile: Tile) {
@@ -34,15 +22,15 @@ class MazePanel : JPanel() {
             tile.westOpen
         )
         val newRoom = Room(tile.color, walls, mazeCoordToGuiCoord(tile.coordinates))
+        println(newRoom.position)
         rooms.add(newRoom)
-
         repaint()
     }
 
     private fun mazeCoordToGuiCoord(coords: Pair<Int, Int>): Pair<Int, Int> {
         val originX = width / 2
         val originY = height - gridSize - 30
-        return Pair((originX + coords.first * gridSize), (originY - coords.second * gridSize))
+        return Pair((originX + (coords.first/30) * gridSize), (originY - (coords.second/30) * gridSize))
     }
 
     override fun paintComponent(g: Graphics) {

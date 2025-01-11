@@ -17,12 +17,8 @@ class Tile(
     var westVisited: Boolean = false
 
     fun printTile(){
-        println(northOpen)
-        println(eastOpen)
-        println(southOpen)
-        println(westOpen)
-        println(color)
-        println(coordinates)
+        println("$northOpen $eastOpen $southOpen $westOpen $color $coordinates")
+
     }
 
 }

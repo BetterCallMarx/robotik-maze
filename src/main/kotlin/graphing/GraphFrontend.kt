@@ -40,7 +40,7 @@ object GraphFrontend {
         //check for walls
         val walls: MutableList<Boolean> = mutableListOf()
         for(d in absoluteDistances){
-            if(d.first>14){
+            if(d.first>140){
                 walls.add(true)
             }else{
                 walls.add(false)
@@ -64,7 +64,7 @@ object GraphFrontend {
             Direction.EAST -> directions[(currentIndex + 1) % directions.size].first
             Direction.SOUTH -> directions[(currentIndex + 2) % directions.size].first
             Direction.WEST -> directions[(currentIndex - 1 + directions.size) % directions.size].first
-            else -> throw IllegalArgumentException("Invalid relative direction")
+
         }
     }
 
