@@ -37,15 +37,25 @@ object GraphFrontend {
             Pair(distances[2].first,getAbsoluteDirection(distances[2].second)),
             Pair(distances[3].first,getAbsoluteDirection(distances[3].second))
         )
-        //check for walls
-        val walls: MutableList<Boolean> = mutableListOf()
+        //Nach wänden gucken, werte wurden empirisch getestet, und stellen den maximal wert + toleranz dar
+        val walls: MutableList<Boolean> = mutableListOf(false, false, false, false )
         for(d in absoluteDistances){
-            if(d.first>140){
-                walls.add(true)
-            }else{
-                walls.add(false)
+            when(d.second){
+                Direction.NORTH -> if(d.first<130){
+                    walls[0] = true
+                }
+                Direction.EAST -> if(d.first<170){
+                    walls[1] = true
+                }
+                Direction.SOUTH -> if(d.first<240){
+                    walls[2] = true
+                }
+                Direction.WEST -> if(d.first<260){
+                    walls[3] = true
+                }
             }
         }
+
         //create tiles based on wall shape
         return Tile(walls[0],walls[1],walls[2],walls[3],color, currentPosition)
     }
