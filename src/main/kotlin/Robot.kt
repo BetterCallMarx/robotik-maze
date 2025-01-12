@@ -22,7 +22,6 @@ class Robot {
     init {
         OSCReceiver.start()
         OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/gyroscope/$gyroscopeSensorPort/angle", 0)
     }
 
 
@@ -81,8 +80,8 @@ class Robot {
         OSCSender(ipTarget, port).send(
             "/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target",
             100,
-            183,
-            -183
+            187,
+            -187
         )
         GraphFrontend.turnWest()
     }
@@ -93,8 +92,8 @@ class Robot {
         OSCSender(ipTarget, port).send(
             "/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target",
             100,
-            -183,
-            183
+            -187,
+            187
         )
         GraphFrontend.turnEast()
     }
@@ -243,6 +242,15 @@ class Robot {
     fun unsubTouchListener() {
         OSCReceiver.unsubListener(touchListenerPath)
         OSCSender(ipTarget, port).send("/$robotName/touch/$touchSensorPort/onchange/stop")
+    }
+
+    fun driveToExit(toVisit :List<Pair<Int,Int>>, directionsNeeded:List<Pair<Int,Int>> ){
+        for(d in directionsNeeded){
+            while(GraphFrontend.facing.second != d){
+                GraphFrontend.turnEast()
+            }
+            driveForward()
+        }
     }
 
 

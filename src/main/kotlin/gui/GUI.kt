@@ -131,6 +131,13 @@ class GUI : JFrame() {
             println(path)
         }
         panel.add(tree)
+
+        val exit = JButton("->")
+        exit.addActionListener {
+            val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
+           // val dirs = GraphFrontend.getTotalDirections(path)
+            //robot.driveToExit(path,)
+        }
     }
 }
 

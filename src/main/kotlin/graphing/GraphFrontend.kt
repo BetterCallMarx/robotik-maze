@@ -1,8 +1,8 @@
 package graphing
 
+import Robot
 import enums.Direction
 import enums.TileColor
-import kotlin.math.abs
 
 //FrontEnd for Graphbased SLAMing, creates Nodes and Edges, based on sensor data
 object GraphFrontend {
@@ -93,6 +93,22 @@ object GraphFrontend {
             else -> TileColor.NONE
         }
     }
+
+    //calculate the needed Direction from two Positions
+    private fun calculateDirection(oldPos: Pair<Int, Int>, newPos: Pair<Int, Int>): Pair<Int, Int> {
+        return PairArithmetic.divide(PairArithmetic.subtract(newPos, oldPos), Pair(30, 30))
+    }
+
+    fun getTotalDirections(toVisit :List<Pair<Int,Int>>): MutableList<Pair<Int, Int>> {
+        //list of direction that connect the tiles that are being visited directions[i] is the direction from toVisit[i] to toVisit[i+1]
+        val directions: MutableList<Pair<Int,Int>> = mutableListOf()
+        for(i in 0 until toVisit.size-1){
+           directions.add(calculateDirection(toVisit[i],toVisit[i+1]))
+        }
+        return directions
+    }
+
+
 
 
 
