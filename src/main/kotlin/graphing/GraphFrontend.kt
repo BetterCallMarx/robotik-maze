@@ -41,16 +41,16 @@ object GraphFrontend {
         val walls: MutableList<Boolean> = mutableListOf(false, false, false, false )
         for(d in absoluteDistances){
             when(d.second){
-                Direction.NORTH -> if(d.first<130){
+                Direction.NORTH -> if(d.first>130){
                     walls[0] = true
                 }
-                Direction.EAST -> if(d.first<170){
+                Direction.EAST -> if(d.first>170){
                     walls[1] = true
                 }
-                Direction.SOUTH -> if(d.first<240){
+                Direction.SOUTH -> if(d.first>240){
                     walls[2] = true
                 }
-                Direction.WEST -> if(d.first<260){
+                Direction.WEST -> if(d.first>260){
                     walls[3] = true
                 }
             }

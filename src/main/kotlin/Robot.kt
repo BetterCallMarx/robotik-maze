@@ -2,6 +2,8 @@ import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
 import graphing.GraphFrontend
+import gui.DebugMessage
+import gui.MazePanel
 import java.lang.Thread.sleep
 
 
@@ -18,6 +20,7 @@ class Robot {
     private val headMotorPort: String = "c"
     private val ipTarget: String = "192.168.178.255"
     private val port: Int = 9001
+
 
     init {
         OSCReceiver.start()
@@ -40,12 +43,20 @@ class Robot {
     }
 
     fun drive(speed: Int, angle: Int) {
+        val start = System.currentTimeMillis()
+        val timeout = 5000L
         var driven: Boolean = false
-        val path: String = "/$robotName/motor/$rightMotorPort$leftMotorPort/reached/target"
+        val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
         OSCReceiver.subListener(path
         ) {
             if(it[0] as Int == angle){
                 driven = true
+                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
+                if(angle>0){
+                    println(GraphFrontend.updatePosition(Pair(30, 30)))
+                }else{
+                    println(GraphFrontend.updatePosition(Pair(-30, -30)))
+                }
                 OSCReceiver.unsubListener(path)
             }else{
                 OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
@@ -54,8 +65,33 @@ class Robot {
         }
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
-        while(!driven){
-            sleep(100)
+        while(!driven && System.currentTimeMillis() - start < timeout) {
+            sleep(10)
+        }
+        if(!driven){
+            DebugMessage.debugMessage = "Es konnte nicht um $angle gefahren werden"
+        }
+    }
+
+
+    //one headturn
+    private fun turnHead(speed: Int, angle: Int) {
+        val start = System.currentTimeMillis()
+        val timeout = 5000L
+        var turned: Boolean = false
+        val path: String = "/$robotName/motor/$headMotorPort/reached/target"
+        OSCReceiver.subListener(path
+        ) {
+            if(it[0] as Int == angle){
+                turned = true
+                OSCReceiver.unsubListener(path)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
+            }
+        }
+        OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
+        while(!turned && System.currentTimeMillis() - start < timeout) {
+            sleep(10)
         }
 
     }
@@ -98,39 +134,44 @@ class Robot {
         GraphFrontend.turnEast()
     }
 
-    fun turn(speed: Int, angle: Int, angle1: Int) {
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send(
-            "/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target",
-            speed,
-            angle,
-            angle1
-        )
-    }
-
-    //one headturn
-    private fun turnHead(speed: Int, angle: Int) {
+    fun turn(speed: Int, angleRight: Int, angleLeft: Int) {
         val start = System.currentTimeMillis()
         val timeout = 5000L
-        var turned: Boolean = false
-        val path: String = "/$robotName/motor/$headMotorPort/reached/target"
-        OSCReceiver.subListener(path
-        ) {
-            if(it[0] as Int == angle){
-                turned = true
-                OSCReceiver.unsubListener(path)
+        var drivenRight: Boolean = false
+        var drivenLeft: Boolean = false
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/reached/target"
+        OSCReceiver.subListener(pathRight
+        ){
+            if(it[0] == angleRight){
+                drivenRight = true
+                OSCReceiver.unsubListener(pathRight)
             }else{
-                OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
             }
         }
-        OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
-        while(!turned && System.currentTimeMillis() - start < timeout) {
+        OSCReceiver.subListener(pathLeft
+        ){
+            if(it[0] == angleLeft){
+                drivenLeft = true
+                OSCReceiver.unsubListener(pathLeft)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+            }
+        }
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+        while(!drivenRight && !drivenLeft && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
-        if(!turned){
-            println("Kopf konnte nicht zu $angle gedreht werden, versuche es erneut")
+        if(!drivenRight && !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
         }
     }
+
+
 
     fun colorSensorColor(): String {
         val start = System.currentTimeMillis()
@@ -222,11 +263,10 @@ class Robot {
             distances.add(Pair(distanceWest, Direction.WEST))
             turnHead(1000, 0)
         }catch (e: Exception){
-            println("Error during head turn: ${e.message}")
+            DebugMessage.debugMessage="Error during head turn: ${e.message}"
             turnHead(1000,0)
-            println("Führen sie die Aktion erneut aus")
+            return emptyList<Pair<Int,Direction>>().toMutableList()
         }
-
         return distances
     }
 

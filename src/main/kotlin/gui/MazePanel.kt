@@ -11,11 +11,18 @@ class MazePanel : JPanel() {
     private val rooms = mutableListOf<Room>()
     private val scale = 3
     private val gridSize = 32 * scale
+    private var debugMessage: String = "" // Holds the debug message
 
     init {
         background = Color(255, 255, 255) // White background
         val timer = Timer(100) { repaint() } // Repaints every 50 milliseconds
         timer.start()
+    }
+
+    private fun drawDebugMessage(g: Graphics2D) {
+        g.color = Color.BLACK
+        g.font = Font("Arial", Font.PLAIN, 16)
+        g.drawString("Debug: ${DebugMessage.debugMessage}", 10, 60) // Draw the debug message
     }
 
     fun addTile(tile: Tile) {
@@ -45,6 +52,7 @@ class MazePanel : JPanel() {
             drawTile(g2, room.position, room.color, room.walls)
         }
         drawStatusText(g2)
+        drawDebugMessage(g2)
     }
 
     private fun drawTile(g: Graphics2D, position: Pair<Int, Int>, color: TileColor, walls: List<Boolean>) {
@@ -93,7 +101,7 @@ class MazePanel : JPanel() {
         val positionText = "Position: ${GraphFrontend.currentPosition}"
         val facingText = "Facing: ${GraphFrontend.facing}"
 
-        // Draw the text at the upper left corner
+        // Draw the text in the upper left corner
         g.drawString(positionText, 10, 20)
         g.drawString(facingText, 10, 40)
     }

@@ -20,7 +20,7 @@ class GUI : JFrame() {
 
     init {
 
-        title = "Dynamic Maze GUI with Controls"
+        title = "GUI"
         extendedState = MAXIMIZED_BOTH
         isUndecorated = false
         isResizable = false
@@ -44,61 +44,57 @@ class GUI : JFrame() {
 
         val forward = JButton("A")
         forward.addActionListener {
-            println(GraphFrontend.currentPosition)
-            robot.driveForward()
-            GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
-            //TODO updateposition in die drive methode
-            println(GraphFrontend.updatePosition(Pair(30, 30)))
-            println(GraphFrontend.currentPosition)
+            robot.drive(500,612)
         }
         panel.add(forward)
+
 
         panel.add(JPanel()) // Empty space
 
         val left = JButton("<")
         left.addActionListener {
-            robot.turnLeft()
+            robot.turn(500,187,-187)
+           // robot.turnLeft()
         }
         panel.add(left)
 
         val right = JButton(">")
         right.addActionListener {
-            robot.turnRight()
+            robot.turn(500,-187,187)
+            //robot.turnRight()
         }
         panel.add(right)
 
         val back = JButton("V")
         back.addActionListener {
-            //robot.driveBackward()
-            //TODO updateposition in die drive methode
-            robot.driveBackward()
-            println(GraphFrontend.updatePosition(Pair(-30, -30)))
-            println(GraphFrontend.currentPosition)
+            robot.drive(500,-612)
+            DebugMessage.debugMessage = "hallo"
         }
         panel.add(back)
 
         val turnHead = JButton("*")
         turnHead.addActionListener {
-
             val distances: MutableList<Pair<Int, Direction>> = robot.completeHeadTurn()
             val color = robot.colorSensorColor()
-
-
-            val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
-            tile.printTile()
-            mazePanel.addTile(tile)
-
-            if (GraphFrontend.currentPosition == Pair(0, 0) && !Tree.rootSet) {
-                Tree.addRoot(tile)
-            } else {
-                Tree.addTileToTile(
-                    GraphFrontend.currentPosition,
-                    GraphFrontend.visitedPositions.last(),
-                    GraphFrontend.getInverseDirection(),
-                    tile
-                )
+            if(distances.isNotEmpty() && color.isNotEmpty()) {
+                val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
+                tile.printTile()
+                mazePanel.addTile(tile)
+                if (GraphFrontend.currentPosition == Pair(0, 0) && !Tree.rootSet) {
+                    Tree.addRoot(tile)
+                } else {
+                    Tree.addTileToTile(
+                        GraphFrontend.currentPosition,
+                        GraphFrontend.visitedPositions.last(),
+                        GraphFrontend.getInverseDirection(),
+                        tile
+                    )
+                }
+                Tree.printTree()
+            }else{
+                DebugMessage.debugMessage = "Es konnte kein Tile erfasst werden"
             }
-            Tree.printTree()
+
         }
         panel.add(turnHead)
 
