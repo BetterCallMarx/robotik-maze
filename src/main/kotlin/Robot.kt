@@ -271,8 +271,6 @@ class Robot {
                         sleep(10)
                     }
                 }
-                //print(d)
-                drive(500, 612)
                 while (!drive(500, 612))
                 {
                     sleep(100)

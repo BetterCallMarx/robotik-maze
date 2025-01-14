@@ -129,14 +129,21 @@ class GUI : JFrame() {
 
         val exit = JButton("->")
         exit.addActionListener {
-            val path = Tree.findShortestPathToRoot(Pair(30,60))
+            val path = Tree.findShortestPathToRoot(Pair(30, 60))
             println(path)
             val directions = GraphFrontend.getTotalDirections(path)
             println(directions)
-            try{
-                robot.driveToExit(path,directions)
-            }catch (e: Exception){
-                println(e)
+            var success = false
+            val maxRetries = 5
+            var attempts = 0
+            while (!success && attempts < maxRetries) {
+                attempts++
+                try {
+                    robot.driveToExit(path, directions)
+                    success = true // If the function completes without exceptions, set success to true
+                } catch (e: Exception) {
+                    println("An error occurred: ${e.message}. Retrying...")
+                }
             }
         }
         panel.add(exit)
