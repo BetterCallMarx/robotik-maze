@@ -1,6 +1,7 @@
 package gui
 
 import Robot
+import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
 import enums.TileColor
 import graphing.GraphFrontend
@@ -124,6 +125,8 @@ class GUI : JFrame() {
         tree.addActionListener {
             val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
             println(path)
+
+
         }
         panel.add(tree)
 

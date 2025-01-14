@@ -34,7 +34,8 @@ class Robot {
         val start = System.currentTimeMillis()
         val timeout = 5000L
         var driven: Boolean = false
-        val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        //val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        val path: String = "/$robotName/motor/$rightMotorPort/target/reached"
         OSCReceiver.subListener(path
         ) {
             if(it[0] as Int == angle){
@@ -70,7 +71,8 @@ class Robot {
         val start = System.currentTimeMillis()
         val timeout = 5000L
         var turned: Boolean = false
-        val path: String = "/$robotName/motor/$headMotorPort/reached/target"
+        //val path: String = "/$robotName/motor/$headMotorPort/reached/target"
+        val path: String = "/$robotName/motor/$headMotorPort/target/reached"
         OSCReceiver.subListener(path
         ) {
             if(it[0] as Int == angle){
@@ -109,8 +111,10 @@ class Robot {
         val timeout = 5000L
         var drivenRight: Boolean = false
         var drivenLeft: Boolean = false
-        val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
-        val pathLeft: String = "/$robotName/motor/$leftMotorPort/reached/target"
+        //val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        //val pathLeft: String = "/$robotName/motor/$leftMotorPort/reached/target"
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/target/reached"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/target/reached"
         OSCReceiver.subListener(pathRight
         ){
             if(it[0] == angleRight){
