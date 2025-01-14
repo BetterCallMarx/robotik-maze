@@ -109,10 +109,10 @@ object GraphFrontend {
         return PairArithmetic.divide(PairArithmetic.subtract(newPos, oldPos), Pair(30, 30))
     }
 
-    fun getTotalDirections(toVisit :List<Pair<Int,Int>>): MutableList<Pair<Int, Int>> {
+    fun getTotalDirections(toVisit :List<Pair<Int,Int>>): List<Pair<Int, Int>> {
         //list of direction that connect the tiles that are being visited directions[i] is the direction from toVisit[i] to toVisit[i+1]
         val directions: MutableList<Pair<Int,Int>> = mutableListOf()
-        for(i in 0 until toVisit.size-1){
+        for(i in 0 until toVisit.size-2){
            directions.add(calculateDirection(toVisit[i],toVisit[i+1]))
         }
         return directions

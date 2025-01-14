@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="Wand erkkennung werte geupdatet">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/gui/DebugMessage.kt" afterDir="false" />
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst,">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +218,9 @@
       <workItem from="1736606585790" duration="6180000" />
       <workItem from="1736624190213" duration="272000" />
       <workItem from="1736679210201" duration="6476000" />
-      <workItem from="1736772961262" duration="5692000" />
+      <workItem from="1736772961262" duration="5861000" />
+      <workItem from="1736854938216" duration="6879000" />
+      <workItem from="1736871778305" duration="1069000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -306,7 +306,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736686889582</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst,">
+      <option name="closed" value="true" />
+      <created>1736788004233</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736788004233</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,6 +350,7 @@
     <MESSAGE value="BFS suche eingefügt und funktioniert, und logging von pos und direction in der gui" />
     <MESSAGE value="calculateDirection, get totalDirection hinzugefügt und funktion zum rausfahren konzeptionell erstellt, fahr funktionen müssen angepasst werden damit das funktioniert" />
     <MESSAGE value="Wand erkkennung werte geupdatet" />
-    <option name="LAST_COMMIT_MESSAGE" value="Wand erkkennung werte geupdatet" />
+    <MESSAGE value="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst," />
+    <option name="LAST_COMMIT_MESSAGE" value="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst," />
   </component>
 </project>

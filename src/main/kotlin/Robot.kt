@@ -2,6 +2,7 @@ import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
 import graphing.GraphFrontend
+import graphing.PairArithmetic
 import gui.DebugMessage
 import gui.MazePanel
 import java.lang.Thread.sleep
@@ -28,21 +29,8 @@ class Robot {
     }
 
 
-
-
-    //driving the robot forward, optimal inputs for a distance of 28cm is : 100, 550
-    fun driveForward() {
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 612)
-    }
-
-    //driving the robot backward, optimal inputs for a distance of 28cm is : 100, -550
-    fun driveBackward() {
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100,-612)
-    }
-
-    fun drive(speed: Int, angle: Int) {
+    //for 30cm forward movement angle is 612, for backwards its -612. 500 is appropriate speed
+    fun drive(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
         val timeout = 5000L
         var driven: Boolean = false
@@ -53,9 +41,9 @@ class Robot {
                 driven = true
                 GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 if(angle>0){
-                    println(GraphFrontend.updatePosition(Pair(30, 30)))
+                    GraphFrontend.updatePosition(Pair(30, 30))
                 }else{
-                    println(GraphFrontend.updatePosition(Pair(-30, -30)))
+                    GraphFrontend.updatePosition(Pair(-30, -30))
                 }
                 OSCReceiver.unsubListener(path)
             }else{
@@ -70,7 +58,10 @@ class Robot {
         }
         if(!driven){
             DebugMessage.debugMessage = "Es konnte nicht um $angle gefahren werden"
+            throw Exception("Es konnte nicht gefahren werden")
         }
+        println("driven")
+        return true
     }
 
 
@@ -110,31 +101,10 @@ class Robot {
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, -250)
     }
 
-    //turn the Robot to the left optimal speed and angle for 90-degree turn: 100, 183, -183
-    fun turnLeft() {
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send(
-            "/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target",
-            100,
-            187,
-            -187
-        )
-        GraphFrontend.turnWest()
-    }
 
-    //turn the Robot to the right optimal speed and angle for a 90-degree turn: 100, -183, 183
-    fun turnRight() {
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send(
-            "/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target",
-            100,
-            -187,
-            187
-        )
-        GraphFrontend.turnEast()
-    }
 
-    fun turn(speed: Int, angleRight: Int, angleLeft: Int) {
+    //for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
+    fun turn(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 5000L
         var drivenRight: Boolean = false
@@ -168,7 +138,16 @@ class Robot {
         }
         if(!drivenRight && !drivenLeft){
             DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
+            throw Exception("Es konnte nicht gedreht werden")
         }
+
+        if(angleLeft<angleRight){
+                GraphFrontend.turnWest()
+        }else{
+                GraphFrontend.turnEast()
+        }
+        println("turned")
+        return true
     }
 
 
@@ -285,11 +264,23 @@ class Robot {
     }
 
     fun driveToExit(toVisit :List<Pair<Int,Int>>, directionsNeeded:List<Pair<Int,Int>> ){
-        for(d in directionsNeeded){
-            while(GraphFrontend.facing.second != d){
-                GraphFrontend.turnEast()
+        try {
+            for (d in directionsNeeded) {
+                while (GraphFrontend.facing.second != d) {
+                    while(!turn(500, -187, 187)){
+                        sleep(10)
+                    }
+                }
+                //print(d)
+                drive(500, 612)
+                while (!drive(500, 612))
+                {
+                    sleep(100)
+                }
             }
-            driveForward()
+        }catch (e: Exception){
+            println(e)
+            throw e
         }
     }
 

@@ -4,7 +4,7 @@ import enums.Direction
 
 object Tree {
     //root of the node corresponds to the starting node, which is the entrance
-    var root: Node? = null
+    private var root: Node? = null
     var rootSet = false
     private val mazeCoordinateMap = mutableMapOf<Pair<Int,Int>,Node>()
 
@@ -74,8 +74,9 @@ object Tree {
         printNode(node.west, visited)
     }
 
-    fun findShortestPathToRoot(startCoordinate: Pair<Int, Int>): List<Pair<Int, Int>>? {
-        val startNode = mazeCoordinateMap[startCoordinate] ?: return null // Ensure start node exists
+    fun findShortestPathToRoot(startCoordinate: Pair<Int, Int>): List<Pair<Int, Int>> {
+        val startNode = mazeCoordinateMap[startCoordinate]
+            ?: return emptyList() // Return an empty list if the start node doesn't exist
         val visited = mutableSetOf<Node>() // To avoid revisiting nodes
         val queue: ArrayDeque<Pair<Node, List<Pair<Int, Int>>>> = ArrayDeque() // Queue for BFS with path tracking
 
@@ -115,8 +116,9 @@ object Tree {
             }
         }
 
-        return null // No path found (should not happen in a tree structure)
+        return emptyList() // No path found, return an empty list
     }
+
 
 
 
