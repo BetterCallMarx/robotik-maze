@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="added wrapper function for basic OSC messages">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" /><change beforePath="$PROJECT_DIR$/src/main/kotlin/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/GUI.kt" afterDir="false" />
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="getTotalDirection fix, loopen von retries bei exit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,36 +20,36 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Enum" />
         <option value="Kotlin File" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Data Class" />
+        <option value="Class" />
+        <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;remedy0101&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/BetterCallMarx/robotik-maze.git&quot;,
-    &quot;accountId&quot;: &quot;1645fc37-b979-4869-910f-0f2cc9ff0aab&quot;
-  }
-}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -61,41 +64,105 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build robotik-maze.executor": "Run",
-    "Kotlin.GUIKt.executor": "Run",
-    "Kotlin.MainKt.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "benutzeroberfläche",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Schule/Desktop/OscTester-main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;integration__test&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Schule/Desktop/OscTester-main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Schule\Desktop\robotik-maze\src\main\kotlin" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\User\Desktop\robotik-maze\src\main\kotlin\GUI" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.GUIKt">
+  <component name="RunManager" selected="Kotlin.MainKt">
+    <configuration name="robotik-maze [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="assemble" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="robotik-maze [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="build" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="robotik-maze [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="GUIKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="GUIKt" />
       <module name="robotik-maze.main" />
@@ -113,17 +180,12 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.robotik-maze [build]" />
+        <item itemvalue="Gradle.robotik-maze [clean]" />
+        <item itemvalue="Gradle.robotik-maze [assemble]" />
         <item itemvalue="Kotlin.GUIKt" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-fdfe4dae3a2d-intellij.indexing.shared.core-IU-243.22562.218" />
-        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-IU-243.22562.218" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -139,8 +201,26 @@
       <workItem from="1733999381980" duration="2732000" />
       <workItem from="1734269797400" duration="9014000" />
       <workItem from="1734882468882" duration="4573000" />
-      <workItem from="1735480082374" duration="2122000" />
-      <workItem from="1736351938579" duration="7967000" />
+      <workItem from="1735552394646" duration="10177000" />
+      <workItem from="1735834709067" duration="830000" />
+      <workItem from="1736016148657" duration="1198000" />
+      <workItem from="1736031898482" duration="452000" />
+      <workItem from="1736086017145" duration="9600000" />
+      <workItem from="1736189232644" duration="7519000" />
+      <workItem from="1736344329804" duration="12223000" />
+      <workItem from="1736516549305" duration="586000" />
+      <workItem from="1736521363740" duration="254000" />
+      <workItem from="1736521636284" duration="1495000" />
+      <workItem from="1736523715298" duration="950000" />
+      <workItem from="1736525390333" duration="5601000" />
+      <workItem from="1736595118002" duration="2995000" />
+      <workItem from="1736606585790" duration="6180000" />
+      <workItem from="1736624190213" duration="272000" />
+      <workItem from="1736679210201" duration="6476000" />
+      <workItem from="1736772961262" duration="5861000" />
+      <workItem from="1736854938216" duration="6879000" />
+      <workItem from="1736871778305" duration="3271000" />
+      <workItem from="1736893373318" duration="2046000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -170,7 +250,87 @@
       <option name="project" value="LOCAL" />
       <updated>1734293149033</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="struktur zum erhalten von osc nachrichten gefixed">
+      <option name="closed" value="true" />
+      <created>1735834949819</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1735834949819</updated>
+    </task>
+    <task id="LOCAL-00006" summary="idk">
+      <option name="closed" value="true" />
+      <created>1736345380701</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1736345380701</updated>
+    </task>
+    <task id="LOCAL-00007" summary="erfolgreich integreiert und in package gepackt">
+      <option name="closed" value="true" />
+      <created>1736513491051</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1736513491051</updated>
+    </task>
+    <task id="LOCAL-00008" summary="letzerr stand">
+      <option name="closed" value="true" />
+      <created>1736607565057</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1736607565057</updated>
+    </task>
+    <task id="LOCAL-00009" summary="BFS suche eingefügt und funktioniert, und logging von pos und direction in der gui">
+      <option name="closed" value="true" />
+      <created>1736611425340</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1736611425340</updated>
+    </task>
+    <task id="LOCAL-00010" summary="calculateDirection, get totalDirection hinzugefügt und funktion zum rausfahren konzeptionell erstellt, fahr funktionen müssen angepasst werden damit das funktioniert">
+      <option name="closed" value="true" />
+      <created>1736685155483</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1736685155483</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Wand erkkennung werte geupdatet">
+      <option name="closed" value="true" />
+      <created>1736686889582</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1736686889582</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst,">
+      <option name="closed" value="true" />
+      <created>1736788004233</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736788004233</updated>
+    </task>
+    <task id="LOCAL-00013" summary="bfs funktion gefixed, aber autonomes zurückfahren funktioniert immer nochnicht amk. Exceptions und error handling zu funktionen hinzugefügt">
+      <option name="closed" value="true" />
+      <created>1736873356882</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736873356882</updated>
+    </task>
+    <task id="LOCAL-00014" summary="getTotalDirection fix, loopen von retries bei exit">
+      <option name="closed" value="true" />
+      <created>1736874021275</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1736874021275</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -197,6 +357,18 @@
     <MESSAGE value="init commit" />
     <MESSAGE value="TODO und neue files" />
     <MESSAGE value="winkel für fahren und drehen" />
-    <option name="LAST_COMMIT_MESSAGE" value="winkel für fahren und drehen" />
+    <MESSAGE value="struktur zum erhalten von osc nachrichten gefixed" />
+    <MESSAGE value="interne welt darstellung eingebaut, und erste funktionalitäten von tiles und bewegen" />
+    <MESSAGE value="idk" />
+    <MESSAGE value="erfolgreich integreiert und in package gepackt" />
+    <MESSAGE value="letzerr stand" />
+    <MESSAGE value="BFS suche eingefügt und funktioniert" />
+    <MESSAGE value="BFS suche eingefügt und funktioniert, und logging von pos und direction in der gui" />
+    <MESSAGE value="calculateDirection, get totalDirection hinzugefügt und funktion zum rausfahren konzeptionell erstellt, fahr funktionen müssen angepasst werden damit das funktioniert" />
+    <MESSAGE value="Wand erkkennung werte geupdatet" />
+    <MESSAGE value="Feedback beim fahren und drehen hinzugefügt, debugmessage im gui hinzugefügt,wanderkkennung funktioniert besser,&#10;out of bounds problem beim erstellen von tile gelöst," />
+    <MESSAGE value="bfs funktion gefixed, aber autonomes zurückfahren funktioniert immer nochnicht amk. Exceptions und error handling zu funktionen hinzugefügt" />
+    <MESSAGE value="getTotalDirection fix, loopen von retries bei exit" />
+    <option name="LAST_COMMIT_MESSAGE" value="getTotalDirection fix, loopen von retries bei exit" />
   </component>
 </project>

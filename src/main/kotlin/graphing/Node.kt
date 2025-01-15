@@ -1,11 +1,9 @@
 package graphing
-
-class Node<T>(val value: T, val parent: Node<T>? = null) {
-    val children: MutableList<Node<T>> = mutableListOf()
-
-    fun addChild(value: T): Node<T> {
-        val child = Node(value, this)
-        children.add(child)
-        return child
-    }
-}
+//Node for the tree structure, tile is itself, directions are parent nodes
+class Node(
+    val tile: Tile, // The tile (room) this node represents
+    var north: Node? = null,
+    var east: Node? = null,
+    var south: Node? = null,
+    var west: Node? = null
+)

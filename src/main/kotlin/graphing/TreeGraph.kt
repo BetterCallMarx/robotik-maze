@@ -1,4 +1,0 @@
-package graphing
-
-object TreeGraph {
-}
