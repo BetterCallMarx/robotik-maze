@@ -7,12 +7,8 @@ import enums.TileColor
 import graphing.GraphFrontend
 import graphing.Tile
 import graphing.Tree
-import java.awt.BorderLayout
-import java.awt.GridLayout
-import javax.swing.JButton
-import javax.swing.JFrame
-import javax.swing.JPanel
-
+import java.awt.*
+import javax.swing.*
 
 class GUI : JFrame() {
 
@@ -20,20 +16,17 @@ class GUI : JFrame() {
     private val mazePanel : MazePanel = MazePanel()
 
     init {
-
         title = "GUI"
         extendedState = MAXIMIZED_BOTH
         isUndecorated = false
         isResizable = false
-        //minimumSize = Dimension(800, 600)
         defaultCloseOperation = EXIT_ON_CLOSE
         layout = BorderLayout()
-
 
         add(mazePanel, BorderLayout.CENTER)
 
         // Button Panel
-        val buttonPanel = JPanel(GridLayout(2, 3)) // Arrange buttons in 2x3 grid
+        val buttonPanel = JPanel(GridBagLayout()) // Using GridBagLayout for more control
         addButtonControls(buttonPanel)
         add(buttonPanel, BorderLayout.SOUTH)
 
@@ -41,42 +34,78 @@ class GUI : JFrame() {
     }
 
     private fun addButtonControls(panel: JPanel) {
-        panel.add(JPanel()) // Empty space
+        val gbc = GridBagConstraints()
+        gbc.anchor = GridBagConstraints.CENTER // Align to the center of grid cells
+        gbc.insets = Insets(5, 5, 5, 5) // Add spacing between buttons
+        gbc.fill = GridBagConstraints.HORIZONTAL // Ensure buttons fill horizontally
 
-        val forward = JButton("A")
-        forward.addActionListener {
-            robot.drive(500,612)
-        }
-        panel.add(forward)
+        // Setze den Hintergrund des gesamten Button-Panels auf eine gewünschte Farbe
+        panel.background = Color(255,255,255);
 
 
-        panel.add(JPanel()) // Empty space
 
+        // Create two sub-grids for left and right sections
+        val leftPanel = JPanel(GridBagLayout()) // Left grid for arrow buttons
+        val rightPanel = JPanel(GridBagLayout()) // Right grid for other buttons
+
+        // Add the buttons to the left panel (Arrow Buttons)
+        addArrowButtons(leftPanel, gbc)
+
+        // Add the buttons to the right panel (Other Buttons)
+        addOtherButtons(rightPanel, gbc)
+
+        // Place the left and right panels in the main button panel
+        gbc.gridx = 0
+        gbc.gridy = 0
+        panel.add(leftPanel, gbc) // Left panel
+
+        gbc.gridx = 1
+        gbc.gridy = 0
+        panel.add(rightPanel, gbc) // Right panel
+    }
+
+    private fun addArrowButtons(panel: JPanel, gbc: GridBagConstraints) {
+        // Forward Button
+        val forward = JButton("^")
+        forward.addActionListener { robot.drive(500, 612) }
+        forward.font = Font("Arial", Font.BOLD, 15)  // Increase font size
+        gbc.gridx = 1
+        gbc.gridy = 0
+        panel.add(forward, gbc)
+
+
+        // Left Button
         val left = JButton("<")
-        left.addActionListener {
-            robot.turn(500,187,-187)
+        left.addActionListener { robot.turn(500, 187, -187) }
+        left.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 0
+        gbc.gridy = 1
+        panel.add(left, gbc)
 
-        }
-        panel.add(left)
-
+        // Right Button
         val right = JButton(">")
-        right.addActionListener {
-            robot.turn(500,-187,187)
-        }
-        panel.add(right)
+        right.addActionListener { robot.turn(500, -187, 187) }
+        right.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 2
+        gbc.gridy = 1
+        panel.add(right, gbc)
 
-        val back = JButton("V")
-        back.addActionListener {
-            robot.drive(500,-612)
-            DebugMessage.debugMessage = "hallo"
-        }
-        panel.add(back)
+        // Back Button
+        val back = JButton("v")
+        back.addActionListener { robot.drive(500, -612) }
+        back.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 1
+        gbc.gridy = 2
+        panel.add(back, gbc)
+    }
 
-        val turnHead = JButton("*")
+    private fun addOtherButtons(panel: JPanel, gbc: GridBagConstraints) {
+        // Turn Head Button
+        val turnHead = JButton("Look")
         turnHead.addActionListener {
             val distances: MutableList<Pair<Int, Direction>> = robot.completeHeadTurn()
             val color = robot.colorSensorColor()
-            if(distances.isNotEmpty() && color.isNotEmpty()) {
+            if (distances.isNotEmpty() && color.isNotEmpty()) {
                 val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
                 tile.printTile()
                 mazePanel.addTile(tile)
@@ -90,20 +119,23 @@ class GUI : JFrame() {
                         tile
                     )
                 }
-            }else{
+            } else {
                 DebugMessage.debugMessage = "Es konnte kein Tile erfasst werden"
             }
-
         }
-        panel.add(turnHead)
+        turnHead.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 0
+        gbc.gridy = 0
+        panel.add(turnHead, gbc)
 
+        // Test Button
         val test = JButton("Test")
         test.addActionListener {
             println("Test button pressed")
             val root = Tile(false, true, true, false, TileColor.RED, Pair(0, 0))
             val tile1 = Tile(true, false, false, true, TileColor.RED, Pair(30, 0))
             val tile2 = Tile(true, false, true, false, TileColor.RED, Pair(30, 30))
-            val tile3 = Tile(true, false, true, false, TileColor.RED, Pair(30, 60))
+            val tile3 = Tile(true, false, true, false, TileColor.NONE, Pair(30, 60))
 
             Tree.addRoot(root)
             Tree.addTileToTile(tile1.coordinates, root.coordinates, Direction.WEST, tile1)
@@ -117,18 +149,29 @@ class GUI : JFrame() {
 
             val path = Tree.findShortestPathToRoot(tile3.coordinates)
         }
-        panel.add(test)
+        test.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 0
+        gbc.gridy = 1
+        panel.add(test, gbc)
 
-        val tree = JButton("Tree")
-        tree.addActionListener {
-            val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
-            println(path)
-
-
+        // Quickest Path Button
+        val quickestpath = JButton("Quickest")
+        quickestpath.addActionListener {
+            val path = Tree.findShortestPathToRoot(Pair(30,60))
+            if (path.isEmpty()) {
+                println("Kein gültiger Pfad gefunden!")
+            } else {
+                println("Kürzester Pfad zur Wurzel: $path")
+                mazePanel.showQuickOnMaze(path)
+            }
         }
-        panel.add(tree)
+        quickestpath.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 0
+        gbc.gridy = 2
+        panel.add(quickestpath, gbc)
 
-        val exit = JButton("->")
+        // Exit Button
+        val exit = JButton("Back")
         exit.addActionListener {
             var success = false
             val maxRetries = 5
@@ -140,13 +183,16 @@ class GUI : JFrame() {
                 attempts++
                 try {
                     robot.driveToExit(path, directions)
-                    success = true // If the function completes without exceptions, set success to true
+                    success = true
                 } catch (e: Exception) {
                     println("An error occurred: ${e.message}. Retrying...")
                 }
             }
         }
-        panel.add(exit)
+        exit.font = Font("Arial", Font.BOLD, 15)
+        gbc.gridx = 0
+        gbc.gridy = 3
+        panel.add(exit, gbc)
 
         val position = JButton("Pos")
         position.addActionListener {
@@ -155,4 +201,3 @@ class GUI : JFrame() {
         panel.add(position)
     }
 }
-
