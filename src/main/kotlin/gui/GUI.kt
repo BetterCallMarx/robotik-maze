@@ -44,6 +44,7 @@ class GUI : JFrame() {
         // Create two sub-grids for left and right sections
         val leftPanel = JPanel(GridBagLayout()) // Left grid for arrow buttons
         val rightPanel = JPanel(GridBagLayout()) // Right grid for other buttons
+
         // Add the buttons to the left panel (Arrow Buttons)
         addArrowButtons(leftPanel, gbc)
         // Add the buttons to the right panel (Other Buttons)
@@ -59,6 +60,7 @@ class GUI : JFrame() {
     }
 
     private fun addArrowButtons(panel: JPanel, gbc: GridBagConstraints) {
+
         // Forward Button
         val forward = JButton("^")
         forward.addActionListener { robot.drive(500, 612) }
@@ -96,27 +98,17 @@ class GUI : JFrame() {
     private fun addOtherButtons(panel: JPanel, gbc: GridBagConstraints) {
         // Turn Head Button
         val turnHead = JButton("Look")
+
         turnHead.addActionListener {
-            val distances: MutableList<Pair<Int, Direction>> = robot.completeHeadTurn()
-            val color = robot.colorSensorColor()
-            if (distances.isNotEmpty() && color.isNotEmpty()) {
-                val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
-                tile.printTile()
+            try {
+                val tile = robot.getTile()
                 mazePanel.addTile(tile)
-                if (GraphFrontend.currentPosition == Pair(0, 0) && !Tree.rootSet) {
-                    Tree.addRoot(tile)
-                } else {
-                    Tree.addTileToTile(
-                        GraphFrontend.currentPosition,
-                        GraphFrontend.visitedPositions.last(),
-                        GraphFrontend.getInverseDirection(),
-                        tile
-                    )
-                }
-            } else {
+            }catch (e: Exception){
                 DebugMessage.debugMessage = "Es konnte kein Tile erfasst werden"
             }
+
         }
+
         turnHead.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
         gbc.gridy = 0
@@ -126,10 +118,18 @@ class GUI : JFrame() {
         val test = JButton("Test")
         test.addActionListener {
             println("Test button pressed")
-            val root = Tile(false, true, true, false, TileColor.RED, Pair(0, 0))
-            val tile1 = Tile(true, false, false, true, TileColor.RED, Pair(30, 0))
-            val tile2 = Tile(true, false, true, false, TileColor.RED, Pair(30, 30))
+            val root = Tile(false, true, true, true, TileColor.NONE, Pair(0, 0))
+            val tile1 = Tile(true, false, false, true, TileColor.NONE, Pair(30, 0))
+            val tile2 = Tile(true, false, true, false, TileColor.NONE, Pair(30, 30))
             val tile3 = Tile(true, false, true, false, TileColor.NONE, Pair(30, 60))
+
+            val tile4 = Tile(true, false, true, false, TileColor.NONE, Pair(-30, 0))
+            val tile5 = Tile(true, false, true, false, TileColor.NONE, Pair(-30, 30))
+            val tile6 = Tile(true, false, true, false, TileColor.NONE, Pair(-60, 30))
+
+
+
+
 
             Tree.addRoot(root)
             Tree.addTileToTile(tile1.coordinates, root.coordinates, Direction.WEST, tile1)
@@ -142,6 +142,15 @@ class GUI : JFrame() {
             mazePanel.addTile(tile3)
 
             val path = Tree.findShortestPathToRoot(tile3.coordinates)
+/*
+            robot.turnHead(1000,90)
+            robot.turnHead(1000,180)
+            robot.turnHead(1000,-90)
+            robot.turnHead(1000,0)
+
+ */
+
+
         }
         test.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
@@ -151,13 +160,15 @@ class GUI : JFrame() {
         // Quickest Path Button
         val quickestpath = JButton("Quickest")
         quickestpath.addActionListener {
+
             val path = Tree.findShortestPathToRoot(Pair(30,60))
             if (path.isEmpty()) {
-                println("Kein gültiger Pfad gefunden!")
+                DebugMessage.debugMessage = "Kein gültiger Weg gefunden"
             } else {
                 println("Kürzester Pfad zur Wurzel: $path")
                 mazePanel.showQuickOnMaze(path)
             }
+
         }
         quickestpath.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
@@ -167,21 +178,7 @@ class GUI : JFrame() {
         // Exit Button
         val exit = JButton("Back")
         exit.addActionListener {
-            var success = false
-            val maxRetries = 5
-            var attempts = 0
-            while (!success && attempts < maxRetries) {
-                val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
-                println(path)
-                val directions = GraphFrontend.getTotalDirections(path)
-                attempts++
-                try {
-                    robot.driveToExit(path, directions)
-                    success = true
-                } catch (e: Exception) {
-                    println("An error occurred: ${e.message}. Retrying...")
-                }
-            }
+            robot.driveToExitRetry()
         }
         exit.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0

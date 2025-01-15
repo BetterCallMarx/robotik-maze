@@ -117,23 +117,7 @@ class MazePanel : JPanel() {
         if (!walls[2]) g.fillRect(x, y + gridSize, gridSize, wallThickness) // South
         if (!walls[3]) g.fillRect(x - wallThickness, y, wallThickness, gridSize) // West
 
-        /*g.color = Color.LIGHT_GRAY
-        if (!walls[0]) {
-            g.fillRect(x - wallThickness, y - wallThickness, wallThickness, wallThickness)
-            g.fillRect(x + gridSize, y - wallThickness, wallThickness, wallThickness)
-        }
-        if (!walls[1]) {
-            g.fillRect(x + gridSize, y - wallThickness, wallThickness, wallThickness)
-            g.fillRect(x + gridSize, y + gridSize, wallThickness, wallThickness)
-        }
-        if (!walls[2]) {
-            g.fillRect(x + gridSize, y + gridSize, wallThickness, wallThickness)
-            g.fillRect(x - wallThickness, y + gridSize, wallThickness, wallThickness)
-        }
-        if (!walls[3]) {
-            g.fillRect(x - wallThickness, y - wallThickness, wallThickness, wallThickness)
-            g.fillRect(x - wallThickness, y + gridSize, wallThickness, wallThickness)
-        }*/
+
     }
     private fun drawStatusText(g: Graphics2D) {
         // Set font and color
