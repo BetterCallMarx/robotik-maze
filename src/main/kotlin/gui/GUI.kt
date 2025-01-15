@@ -29,7 +29,6 @@ class GUI : JFrame() {
         val buttonPanel = JPanel(GridBagLayout()) // Using GridBagLayout for more control
         addButtonControls(buttonPanel)
         add(buttonPanel, BorderLayout.SOUTH)
-
         isVisible = true
     }
 
@@ -42,18 +41,13 @@ class GUI : JFrame() {
         // Setze den Hintergrund des gesamten Button-Panels auf eine gewünschte Farbe
         panel.background = Color(255,255,255);
 
-
-
         // Create two sub-grids for left and right sections
         val leftPanel = JPanel(GridBagLayout()) // Left grid for arrow buttons
         val rightPanel = JPanel(GridBagLayout()) // Right grid for other buttons
-
         // Add the buttons to the left panel (Arrow Buttons)
         addArrowButtons(leftPanel, gbc)
-
         // Add the buttons to the right panel (Other Buttons)
         addOtherButtons(rightPanel, gbc)
-
         // Place the left and right panels in the main button panel
         gbc.gridx = 0
         gbc.gridy = 0
