@@ -90,7 +90,6 @@ class GUI : JFrame() {
                         tile
                     )
                 }
-                Tree.printTree()
             }else{
                 DebugMessage.debugMessage = "Es konnte kein Tile erfasst werden"
             }
@@ -117,7 +116,6 @@ class GUI : JFrame() {
             mazePanel.addTile(tile3)
 
             val path = Tree.findShortestPathToRoot(tile3.coordinates)
-            println(path)
         }
         panel.add(test)
 
@@ -132,14 +130,13 @@ class GUI : JFrame() {
 
         val exit = JButton("->")
         exit.addActionListener {
-            val path = Tree.findShortestPathToRoot(Pair(30, 60))
-            println(path)
-            val directions = GraphFrontend.getTotalDirections(path)
-            println(directions)
             var success = false
             val maxRetries = 5
             var attempts = 0
             while (!success && attempts < maxRetries) {
+                val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
+                println(path)
+                val directions = GraphFrontend.getTotalDirections(path)
                 attempts++
                 try {
                     robot.driveToExit(path, directions)
@@ -150,6 +147,12 @@ class GUI : JFrame() {
             }
         }
         panel.add(exit)
+
+        val position = JButton("Pos")
+        position.addActionListener {
+            robot.positionSelf()
+        }
+        panel.add(position)
     }
 }
 

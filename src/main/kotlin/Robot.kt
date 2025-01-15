@@ -90,17 +90,13 @@ class Robot {
     }
 
     fun positionSelf(){
-        var delta: Int = 0
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, 250)
-        while(!touchSensorTouched()){
+        val start = System.currentTimeMillis()
+        val timeout = 5000L
+        drive(250,300)
+        while(!touchSensorTouched() && System.currentTimeMillis() - start < timeout){
             sleep(10)
-            delta += 10
-            println(delta)
-            if(delta>500){break}
         }
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
-        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", 100, -250)
+        drive(250,-150)
     }
 
 
