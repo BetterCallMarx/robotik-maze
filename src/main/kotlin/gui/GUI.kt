@@ -117,6 +117,7 @@ class GUI : JFrame() {
         // Test Button
         val test = JButton("Test")
         test.addActionListener {
+            /*
             val root = Tile(true, true, true, false, TileColor.NONE, Pair(0, 0)) // Entrance with walls on the east and south
 
 // Row 1 (Walls added)
@@ -164,7 +165,7 @@ class GUI : JFrame() {
             mazePanel.addTile(tile9)
             mazePanel.addTile(tile10)
             mazePanel.addTile(tile11)
-
+*/
         }
         test.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
@@ -177,7 +178,6 @@ class GUI : JFrame() {
 
             //val startCoordinate = Pair(0, 0) // Starting point
             val colorsToVisit = setOf(TileColor.BLUE, TileColor.RED, TileColor.GREEN) // Colored tiles to visit
-
             val path = Tree.findShortestPathThroughColorsAndReturn(GraphFrontend.currentPosition, colorsToVisit)
             println("Shortest Path: $path")
             if (path.isEmpty()) {

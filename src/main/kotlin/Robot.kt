@@ -1,6 +1,7 @@
 import de.fhkiel.rob.legoosctester.osc.OSCReceiver
 import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
+import enums.TileColor
 import graphing.GraphFrontend
 import graphing.Tile
 import graphing.Tree
@@ -67,7 +68,7 @@ class Robot {
 
     fun drive2(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
-        val timeout = 5000L
+        val timeout = 2500L
         var drivenRight: Boolean = false
         var drivenLeft: Boolean = false
         //val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
@@ -121,7 +122,7 @@ class Robot {
     //one headturn
     private fun turnHead(speed: Int, angle: Int) {
         val start = System.currentTimeMillis()
-        val timeout = 5000L
+        val timeout = 2500L
         var turned: Boolean = false
         //val path: String = "/$robotName/motor/$headMotorPort/reached/target"
         val path: String = "/$robotName/motor/$headMotorPort/target/reached"
@@ -147,7 +148,7 @@ class Robot {
     fun positionSelf():Boolean{
         try {
             val start = System.currentTimeMillis()
-            val timeout = 5000L
+            val timeout = 2500L
             drive2(250, 300)
             while (!touchSensorTouched() && System.currentTimeMillis() - start < timeout) {
                 sleep(10)
@@ -164,7 +165,7 @@ class Robot {
     //for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
     fun turn(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
-        val timeout = 5000L
+        val timeout = 2500L
         var drivenRight: Boolean = false
         var drivenLeft: Boolean = false
         //val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
@@ -212,7 +213,7 @@ class Robot {
 
     private fun colorSensorColor(): String {
         val start = System.currentTimeMillis()
-        val timeout = 5000L
+        val timeout = 2500L
         var color : String = ""
         val path: String = "/$robotName/color/$colorSensorPort/is"
         OSCReceiver.subListener(path
@@ -231,6 +232,8 @@ class Robot {
     }
 
     private fun touchSensorTouched(): Boolean {
+        val start = System.currentTimeMillis()
+        val timeout = 2500L
         var touched : Boolean = false
         var measured: Boolean = false
         val path: String = "/$robotName/touch/$touchSensorPort/pressed"
@@ -241,7 +244,7 @@ class Robot {
             measured = true
         }
         OSCSender(ipTarget, port).send("/$robotName/touch/$touchSensorPort")
-        while(!measured){
+        while(!measured && System.currentTimeMillis() - start < timeout){
             sleep(10)
         }
         return touched
@@ -250,7 +253,7 @@ class Robot {
     private fun ultraSensorDistance(): Int {
         var distance: Int = -1
         try {
-            val timeout = 5000L
+            val timeout = 2500L
             val start = System.currentTimeMillis()
             val path: String = "/$robotName/ultrasonic/${ultraSonicPort}/distance/is"
             OSCReceiver.subListener(
@@ -403,7 +406,7 @@ class Robot {
         val maxRetries = 5
         var attempts = 0
         while (!success && attempts < maxRetries) {
-            val path = Tree.findShortestPathThroughColors(GraphFrontend.currentPosition)
+            val path = Tree.findShortestPathThroughColorsAndReturn(GraphFrontend.currentPosition,setOf(TileColor.BLUE, TileColor.RED, TileColor.GREEN))
             println(path)
             val directions = GraphFrontend.getTotalDirections(path)
             attempts++
@@ -425,7 +428,7 @@ class Robot {
             if (GraphFrontend.currentPosition == Pair(0, 0) && !Tree.rootSet) {
                 Tree.addRoot(tile)
             } else {
-                Tree.addTileToTile(
+                Tree.addOrReplaceTileToTile(
                     GraphFrontend.currentPosition,
                     GraphFrontend.visitedPositions.last(),
                     GraphFrontend.getInverseDirection(),
@@ -438,12 +441,6 @@ class Robot {
         }
     }
 
-    private fun findDirection(direction: Pair<Int,Int>){
-        while (GraphFrontend.facing.second != direction){
-            while(!turn(500, -187, 187)){
-                sleep(100)
-            }
-        }
-    }
+
 
 }
