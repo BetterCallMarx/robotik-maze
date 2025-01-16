@@ -15,6 +15,7 @@ class GUI : JFrame() {
 
     private val robot: Robot = Robot()
     private val mazePanel : MazePanel = MazePanel()
+    private var shiftPressed = false
 
     init {
         title = "GUI"
@@ -31,6 +32,15 @@ class GUI : JFrame() {
         addButtonControls(buttonPanel)
         add(buttonPanel, BorderLayout.SOUTH)
         isVisible = true
+
+        // Global key listener to detect Shift key press
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher { e ->
+            when (e.id) {
+                KeyEvent.KEY_PRESSED -> if (e.keyCode == KeyEvent.VK_SHIFT) shiftPressed = true
+                KeyEvent.KEY_RELEASED -> if (e.keyCode == KeyEvent.VK_SHIFT) shiftPressed = false
+            }
+            false // Returning false allows the event to propagate normally
+        }
     }
 
     private fun addButtonControls(panel: JPanel) {
@@ -61,26 +71,7 @@ class GUI : JFrame() {
     }
 
     private fun addArrowButtons(panel: JPanel, gbc: GridBagConstraints) {
-        // Flag to check if Shift is pressed
-        var shiftPressed = false
 
-        // Add KeyListener to the panel
-        panel.addKeyListener(object : KeyAdapter() {
-            override fun keyPressed(e: KeyEvent) {
-                // If Shift key is pressed, set a flag to indicate it
-                if (e.keyCode == KeyEvent.VK_SHIFT) {
-                    shiftPressed = true
-                }
-            }
-
-            override fun keyReleased(e: KeyEvent) {
-                // Reset the flag when Shift key is released
-                if (e.keyCode == KeyEvent.VK_SHIFT) {
-                    shiftPressed = false
-                }
-            }
-        })
-        panel.isFocusable = true // Ensure the panel can receive key events
 
 
         // Forward Button
@@ -101,7 +92,7 @@ class GUI : JFrame() {
         val left = JButton("<")
         left.addActionListener {
             if (shiftPressed) {
-                robot.turnNoDirection(500,90,-90)
+                robot.turnNoDirection(500,45,-45)
             } else {
                 robot.turn2(500, 187, -187)
             }
@@ -115,7 +106,7 @@ class GUI : JFrame() {
         val right = JButton(">")
         right.addActionListener {
             if (shiftPressed) {
-                robot.turnNoDirection(500,-90,90)
+                robot.turnNoDirection(500,-45,45)
             } else {
                 robot.turn2(500, -187, 187)
             }
