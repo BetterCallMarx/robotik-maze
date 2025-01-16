@@ -1,6 +1,6 @@
 import gui.GUI
 
-const val DEBUG: Boolean = false
+const val DEBUG: Boolean = true
 fun main(args: Array<String>) {
     GUI();
 }

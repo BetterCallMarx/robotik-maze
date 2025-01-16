@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="merge von benutzeroberfläche">
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="gui klasse aufgeräumt und average turn head hinzugefügt">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,6 +68,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;Gradle.Build robotik-maze.executor&quot;: &quot;Run&quot;,
     &quot;Kotlin.MainKt.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
@@ -224,7 +227,8 @@
       <workItem from="1736854938216" duration="6879000" />
       <workItem from="1736871778305" duration="3271000" />
       <workItem from="1736893373318" duration="2046000" />
-      <workItem from="1736967694383" duration="5172000" />
+      <workItem from="1736967694383" duration="5698000" />
+      <workItem from="1737020770923" duration="4368000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -342,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736967244879</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="gui klasse aufgeräumt und average turn head hinzugefügt">
+      <option name="closed" value="true" />
+      <created>1736974573100</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1736974573100</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -366,6 +378,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="init commit" />
     <MESSAGE value="TODO und neue files" />
     <MESSAGE value="winkel für fahren und drehen" />
@@ -382,6 +395,7 @@
     <MESSAGE value="bfs funktion gefixed, aber autonomes zurückfahren funktioniert immer nochnicht amk. Exceptions und error handling zu funktionen hinzugefügt" />
     <MESSAGE value="getTotalDirection fix, loopen von retries bei exit" />
     <MESSAGE value="merge von benutzeroberfläche" />
-    <option name="LAST_COMMIT_MESSAGE" value="merge von benutzeroberfläche" />
+    <MESSAGE value="gui klasse aufgeräumt und average turn head hinzugefügt" />
+    <option name="LAST_COMMIT_MESSAGE" value="gui klasse aufgeräumt und average turn head hinzugefügt" />
   </component>
 </project>

@@ -63,7 +63,7 @@ class GUI : JFrame() {
 
         // Forward Button
         val forward = JButton("^")
-        forward.addActionListener { robot.drive(500, 612) }
+        forward.addActionListener { robot.drive2(500, 612) }
         forward.font = Font("Arial", Font.BOLD, 15)  // Increase font size
         gbc.gridx = 1
         gbc.gridy = 0
@@ -88,7 +88,7 @@ class GUI : JFrame() {
 
         // Back Button
         val back = JButton("v")
-        back.addActionListener { robot.drive(500, -612) }
+        back.addActionListener { robot.drive2(500, -612) }
         back.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 1
         gbc.gridy = 2

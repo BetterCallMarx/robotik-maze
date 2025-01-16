@@ -27,7 +27,8 @@ object GraphFrontend {
     private val directions = listOf(facingNorth, facingEast, facingSouth, facingWest)
     var facing = facingNorth //robot starts facing north
     var visitedPositions : MutableList<Pair<Int,Int>> = mutableListOf() //add position of tile to lastPosition to keep track of visited tiles and get last one
-    var currentPosition: Pair<Int,Int> = startPosition
+    //var currentPosition: Pair<Int,Int> = startPosition
+    var currentPosition: Pair<Int,Int> = Pair(30,60)
 
     fun createTile(distances:MutableList<Pair<Int,Direction>>,color: TileColor): Tile {
         //adjust relative Direction to absolute direction
