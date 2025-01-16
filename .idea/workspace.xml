@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="gui klasse aufgeräumt und average turn head hinzugefügt">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="bumper und reposition hinzugefügt">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/image.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,6 +51,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="bd48f170d0b8a3782a1681aa7a6fc82045957809" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -122,7 +128,6 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="robotik-maze [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -144,7 +149,6 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="robotik-maze [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -166,7 +170,6 @@
       <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
     <configuration name="GUIKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
@@ -186,10 +189,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.robotik-maze [build]" />
-        <item itemvalue="Gradle.robotik-maze [clean]" />
-        <item itemvalue="Gradle.robotik-maze [assemble]" />
         <item itemvalue="Kotlin.GUIKt" />
+        <item itemvalue="Gradle.robotik-maze [clean]" />
+        <item itemvalue="Gradle.robotik-maze [build]" />
+        <item itemvalue="Gradle.robotik-maze [assemble]" />
+        <item itemvalue="Gradle.robotik-maze [build]" />
       </list>
     </recent_temporary>
   </component>
@@ -229,6 +233,7 @@
       <workItem from="1736893373318" duration="2046000" />
       <workItem from="1736967694383" duration="5698000" />
       <workItem from="1737020770923" duration="4368000" />
+      <workItem from="1737031518477" duration="8469000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
@@ -369,6 +374,17 @@
               <option name="CUSTOM_BOOLEAN_PROPERTIES">
                 <map>
                   <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="integration_test" />
+                      </list>
+                    </value>
+                  </entry>
                 </map>
               </option>
             </State>

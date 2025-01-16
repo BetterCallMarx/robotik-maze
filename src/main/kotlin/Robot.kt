@@ -40,7 +40,7 @@ class Robot {
         ) {
             if(it[0] as Int == angle){
                 driven = true
-                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
+                //GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 if(angle>0){
                     GraphFrontend.updatePosition(Pair(30, 30))
                 }else{
@@ -105,14 +105,15 @@ class Robot {
         if(!drivenRight || !drivenLeft){
             DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
             throw Exception("Es konnte nicht gedreht werden")
+        }else {
+            if (angle > 0) {
+                GraphFrontend.updatePosition(Pair(30, 30))
+            } else {
+                GraphFrontend.updatePosition(Pair(-30, -30))
+            }
+            println("driven")
+            return true
         }
-        if(angle>0){
-            GraphFrontend.updatePosition(Pair(30, 30))
-        }else{
-            GraphFrontend.updatePosition(Pair(-30, -30))
-        }
-        println("driven")
-        return true
     }
 
 
@@ -402,7 +403,7 @@ class Robot {
         val maxRetries = 5
         var attempts = 0
         while (!success && attempts < maxRetries) {
-            val path = Tree.findShortestPathToRoot(GraphFrontend.currentPosition)
+            val path = Tree.findShortestPathThroughColors(GraphFrontend.currentPosition)
             println(path)
             val directions = GraphFrontend.getTotalDirections(path)
             attempts++
@@ -416,7 +417,7 @@ class Robot {
     }
 
     fun getTile(): Tile {
-        val distances: MutableList<Pair<Int, Direction>> = completeHeadTurnAverage()
+        val distances: MutableList<Pair<Int, Direction>> = completeHeadTurn()
         val color = colorSensorColor()
         if (distances.isNotEmpty() && color.isNotEmpty()) {
             val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
