@@ -13,7 +13,6 @@ class MazePanel : JPanel() {
     private val rooms = mutableListOf<Room>()
     private val scale = 2
     private val gridSize = 32 * scale
-    private var debugMessage: String = "" // Holds the debug message
     private val pathPoints = mutableListOf<Pair<Int, Int>>() // Speichert die Punkte des Pfads
     private val overlayImage: Image
 

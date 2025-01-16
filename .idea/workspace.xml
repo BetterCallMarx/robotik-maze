@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="fixes">
-      <change afterPath="$PROJECT_DIR$/src/arrow right.webp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/arrow up.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/images.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arrow right.webp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/arrow up.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/images.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/Tree.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,18 +59,18 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "remedy0101"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;remedy0101&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/BetterCallMarx/robotik-maze.git",
-    "accountId": "1645fc37-b979-4869-910f-0f2cc9ff0aab"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/BetterCallMarx/robotik-maze.git&quot;,
+    &quot;accountId&quot;: &quot;1645fc37-b979-4869-910f-0f2cc9ff0aab&quot;
   }
-}]]></component>
+}</component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -106,7 +107,7 @@
     "project.structure.last.edited": "Global Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

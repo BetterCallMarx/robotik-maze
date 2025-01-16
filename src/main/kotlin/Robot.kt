@@ -33,37 +33,53 @@ class Robot {
     //for 30cm forward movement angle is 612, for backwards its -612. 500 is appropriate speed
     fun drive(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
-        val timeout = 5000L
-        var driven: Boolean = false
+        val timeout = 2500L
+        var drivenRight: Boolean = false
+        var drivenLeft: Boolean = false
         //val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
-        val path: String = "/$robotName/motor/$rightMotorPort/target/reached"
-        OSCReceiver.subListener(path
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/target/reached"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/target/reached"
+        OSCReceiver.subListener(pathRight
         ) {
             if(it[0] as Int == angle){
-                driven = true
-                //GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
-                if(angle>0){
-                    GraphFrontend.updatePosition(Pair(30, 30))
-                }else{
-                    GraphFrontend.updatePosition(Pair(-30, -30))
-                }
-                OSCReceiver.unsubListener(path)
+                drivenRight = true
+                OSCReceiver.unsubListener(pathRight)
             }else{
                 OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
                 OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
             }
         }
+        OSCReceiver.subListener(pathLeft
+        ) {
+            if(it[0] as Int == angle){
+                drivenLeft = true
+                OSCReceiver.unsubListener(pathLeft)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+            }
+        }
+
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
-        while(!driven && System.currentTimeMillis() - start < timeout) {
+        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
-        if(!driven){
-            DebugMessage.debugMessage = "Es konnte nicht um $angle gefahren werden"
+        if(!drivenRight || !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht  gefahren werden"
             throw Exception("Es konnte nicht gefahren werden")
+        }
+
+        if (angle > 0) {
+            GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
+            GraphFrontend.updatePosition(Pair(30, 30))
+        } else {
+            GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
+            GraphFrontend.updatePosition(Pair(-30, -30))
         }
         println("driven")
         return true
+
     }
 
     fun drive2(speed: Int, angle: Int) : Boolean{
@@ -117,6 +133,50 @@ class Robot {
 
     }
 
+    fun driveNoPosition(speed: Int, angle: Int) : Boolean{
+        val start = System.currentTimeMillis()
+        val timeout = 2500L
+        var drivenRight: Boolean = false
+        var drivenLeft: Boolean = false
+        //val path: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/target/reached"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/target/reached"
+        OSCReceiver.subListener(pathRight
+        ) {
+            if(it[0] as Int == angle){
+                drivenRight = true
+                OSCReceiver.unsubListener(pathRight)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+            }
+        }
+        OSCReceiver.subListener(pathLeft
+        ) {
+            if(it[0] as Int == angle){
+                drivenLeft = true
+                OSCReceiver.unsubListener(pathLeft)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+            }
+        }
+
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
+        while(!drivenRight && !drivenLeft && System.currentTimeMillis() - start < timeout) {
+            sleep(10)
+        }
+        if(!drivenRight && !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht  gefahren werden"
+            throw Exception("Es konnte nicht gefahren werden")
+        }
+
+        println("driven")
+        return true
+
+    }
+
 
 
     //one headturn
@@ -163,7 +223,7 @@ class Robot {
 
 
     //for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
-    fun turn(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
+    fun turn2(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
         var drivenRight: Boolean = false
@@ -206,6 +266,96 @@ class Robot {
                 GraphFrontend.turnWest()
         }else{
                 GraphFrontend.turnEast()
+        }
+        println("turned")
+        return true
+    }
+
+    fun turnNoDirection(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
+        val start = System.currentTimeMillis()
+        val timeout = 2500L
+        var drivenRight: Boolean = false
+        var drivenLeft: Boolean = false
+        //val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        //val pathLeft: String = "/$robotName/motor/$leftMotorPort/reached/target"
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/target/reached"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/target/reached"
+        OSCReceiver.subListener(pathRight
+        ){
+            if(it[0] == angleRight){
+                drivenRight = true
+                OSCReceiver.unsubListener(pathRight)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+            }
+        }
+        OSCReceiver.subListener(pathLeft
+        ){
+            if(it[0] == angleLeft){
+                drivenLeft = true
+                OSCReceiver.unsubListener(pathLeft)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+            }
+        }
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+        while(!drivenRight && !drivenLeft && System.currentTimeMillis() - start < timeout) {
+            sleep(10)
+        }
+        if(!drivenRight && !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
+            throw Exception("Es konnte nicht gedreht werden")
+        }
+        println("turned")
+        return true
+    }
+
+    fun turn(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
+        val start = System.currentTimeMillis()
+        val timeout = 2500L
+        var drivenRight: Boolean = false
+        var drivenLeft: Boolean = false
+        //val pathRight: String = "/$robotName/motor/$rightMotorPort/reached/target"
+        //val pathLeft: String = "/$robotName/motor/$leftMotorPort/reached/target"
+        val pathRight: String = "/$robotName/motor/$rightMotorPort/target/reached"
+        val pathLeft: String = "/$robotName/motor/$leftMotorPort/target/reached"
+        OSCReceiver.subListener(pathRight
+        ){
+            if(it[0] == angleRight){
+                drivenRight = true
+                OSCReceiver.unsubListener(pathRight)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+            }
+        }
+        OSCReceiver.subListener(pathLeft
+        ){
+            if(it[0] == angleLeft){
+                drivenLeft = true
+                OSCReceiver.unsubListener(pathLeft)
+            }else{
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+            }
+        }
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
+        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
+            sleep(10)
+        }
+        if(!drivenRight || !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
+            throw Exception("Es konnte nicht gedreht werden")
+        }
+
+        if(angleLeft<angleRight){
+            GraphFrontend.turnWest()
+        }else{
+            GraphFrontend.turnEast()
         }
         println("turned")
         return true
@@ -367,34 +517,30 @@ class Robot {
     }
 
     private fun driveToExit(directionsNeeded: List<Pair<Int, Int>>){
-
         try {
             for (d in directionsNeeded) {
-
-
                 if(ultraSensorDistance() < 300){
                     while(!positionSelf()){sleep(100)}
                 }
-
-
                 while (GraphFrontend.facing.second != d) {
                     while(!turn(500, -187, 187)){
                         sleep(1000)
                     }
+                    if(ultraSensorDistance() < 300){
+                        while(!positionSelf()){sleep(100)}
+                    }
                 }
-                while (!drive2(500, 612))
+                while (!drive(500, 612))
                 {
                     sleep(1000)
                 }
             }
-
             while (GraphFrontend.facing.second != Pair(0,-1)) {
                 while(!turn(500, -187, 187)){
                     sleep(100)
                 }
             }
-            drive2(500, 612)
-
+            drive(500, 612)
         }catch (e: Exception){
             println(e)
             throw e
@@ -427,10 +573,8 @@ class Robot {
             tile.printTile()
             if ((GraphFrontend.currentPosition == Pair(0, 0)) && !Tree.rootSet) {
                 Tree.addRoot(tile)
-            } else {
+            }else {
                 try {
-
-
                     Tree.addOrReplaceTileToTile(
                         GraphFrontend.currentPosition,
                         GraphFrontend.visitedPositions.last(),

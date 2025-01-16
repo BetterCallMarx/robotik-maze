@@ -1,13 +1,14 @@
 package gui
 
 import Robot
-import de.fhkiel.rob.legoosctester.osc.OSCSender
 import enums.Direction
 import enums.TileColor
 import graphing.GraphFrontend
 import graphing.Tile
 import graphing.Tree
 import java.awt.*
+import java.awt.event.KeyAdapter
+import java.awt.event.KeyEvent
 import javax.swing.*
 
 class GUI : JFrame() {
@@ -60,19 +61,51 @@ class GUI : JFrame() {
     }
 
     private fun addArrowButtons(panel: JPanel, gbc: GridBagConstraints) {
+        // Flag to check if Shift is pressed
+        var shiftPressed = false
+
+        // Add KeyListener to the panel
+        panel.addKeyListener(object : KeyAdapter() {
+            override fun keyPressed(e: KeyEvent) {
+                // If Shift key is pressed, set a flag to indicate it
+                if (e.keyCode == KeyEvent.VK_SHIFT) {
+                    shiftPressed = true
+                }
+            }
+
+            override fun keyReleased(e: KeyEvent) {
+                // Reset the flag when Shift key is released
+                if (e.keyCode == KeyEvent.VK_SHIFT) {
+                    shiftPressed = false
+                }
+            }
+        })
+        panel.isFocusable = true // Ensure the panel can receive key events
+
 
         // Forward Button
         val forward = JButton("^")
-        forward.addActionListener { robot.drive2(500, 612) }
+        forward.addActionListener {
+            if (shiftPressed) {
+                robot.driveNoPosition(500,61)
+            } else {
+                robot.drive2(500, 612)
+            }
+        }
         forward.font = Font("Arial", Font.BOLD, 15)  // Increase font size
         gbc.gridx = 1
         gbc.gridy = 0
         panel.add(forward, gbc)
 
-
         // Left Button
         val left = JButton("<")
-        left.addActionListener { robot.turn(500, 187, -187) }
+        left.addActionListener {
+            if (shiftPressed) {
+                robot.turnNoDirection(500,90,-90)
+            } else {
+                robot.turn2(500, 187, -187)
+            }
+        }
         left.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
         gbc.gridy = 1
@@ -80,7 +113,13 @@ class GUI : JFrame() {
 
         // Right Button
         val right = JButton(">")
-        right.addActionListener { robot.turn(500, -187, 187) }
+        right.addActionListener {
+            if (shiftPressed) {
+                robot.turnNoDirection(500,-90,90)
+            } else {
+                robot.turn2(500, -187, 187)
+            }
+        }
         right.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 2
         gbc.gridy = 1
@@ -88,12 +127,19 @@ class GUI : JFrame() {
 
         // Back Button
         val back = JButton("v")
-        back.addActionListener { robot.drive2(500, -612) }
+        back.addActionListener {
+            if (shiftPressed) {
+                robot.drive2(500, -61)
+            } else {
+                robot.drive2(500, -612)
+            }
+        }
         back.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 1
         gbc.gridy = 2
         panel.add(back, gbc)
     }
+
 
     private fun addOtherButtons(panel: JPanel, gbc: GridBagConstraints) {
         // Turn Head Button
@@ -114,13 +160,13 @@ class GUI : JFrame() {
         gbc.gridy = 0
         panel.add(turnHead, gbc)
 
-        // Test Button
+
         val test = JButton("Test")
         test.addActionListener {
-            /*
+
             val root = Tile(true, true, true, false, TileColor.NONE, Pair(0, 0)) // Entrance with walls on the east and south
 
-// Row 1 (Walls added)
+
             val tile1 = Tile(true, false, true, false, TileColor.NONE, Pair(0, 30)) // South open
             val tile2 = Tile(false, false, true, false, TileColor.NONE, Pair(0, 60)) // South and west walls
             val tile3 = Tile(false, true, true, false, TileColor.BLUE, Pair(0, 90)) // Blue Tile
@@ -152,7 +198,7 @@ class GUI : JFrame() {
             Tree.addTileToTile(root.coordinates,tile11.coordinates,Direction.EAST,root)
 
 
-// Add Tiles to MazePanel
+
             mazePanel.addTile(root)
             mazePanel.addTile(tile1)
             mazePanel.addTile(tile2)
@@ -165,7 +211,7 @@ class GUI : JFrame() {
             mazePanel.addTile(tile9)
             mazePanel.addTile(tile10)
             mazePanel.addTile(tile11)
-*/
+
         }
         test.font = Font("Arial", Font.BOLD, 15)
         gbc.gridx = 0
@@ -175,8 +221,6 @@ class GUI : JFrame() {
         // Quickest Path Button
         val quickestpath = JButton("Quickest")
         quickestpath.addActionListener {
-
-            //val startCoordinate = Pair(0, 0) // Starting point
             val colorsToVisit = setOf(TileColor.BLUE, TileColor.RED, TileColor.GREEN) // Colored tiles to visit
             val path = Tree.findShortestPathThroughColorsAndReturn(GraphFrontend.currentPosition, colorsToVisit)
             println("Shortest Path: $path")

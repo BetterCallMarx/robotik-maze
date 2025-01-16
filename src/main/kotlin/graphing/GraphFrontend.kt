@@ -29,7 +29,7 @@ object GraphFrontend {
     var visitedPositions : MutableList<Pair<Int,Int>> = mutableListOf() //add position of tile to lastPosition to keep track of visited tiles and get last one
     var currentPosition: Pair<Int,Int> = startPosition
 
-    fun createTile(distances:MutableList<Pair<Int,Direction>>,color: TileColor): Tile {
+    fun createTile(distances:List<Pair<Int,Direction>>,color: TileColor): Tile {
         //adjust relative Direction to absolute direction
         val absoluteDistances: MutableList<Pair<Int,Direction>> = mutableListOf(
             Pair(distances[0].first,getAbsoluteDirection(distances[0].second)),
