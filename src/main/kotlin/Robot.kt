@@ -69,12 +69,10 @@ class Robot {
             DebugMessage.debugMessage = "Es konnte nicht  gefahren werden"
             throw Exception("Es konnte nicht gefahren werden")
         }
-
+        GraphFrontend.visitedPositions.add(Pair(GraphFrontend.currentPosition,GraphFrontend.getInverseDirection()))
         if (angle > 0) {
-            GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
             GraphFrontend.updatePosition(Pair(30, 30))
         } else {
-            GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
             GraphFrontend.updatePosition(Pair(-30, -30))
         }
         println("driven")
@@ -120,12 +118,11 @@ class Robot {
             DebugMessage.debugMessage = "Es konnte nicht  gefahren werden"
             throw Exception("Es konnte nicht gefahren werden")
         }
-
+        GraphFrontend.visitedPositions.add(Pair(GraphFrontend.currentPosition,GraphFrontend.getInverseDirection()))
             if (angle > 0) {
-                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
+
                 GraphFrontend.updatePosition(Pair(30, 30))
             } else {
-                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 GraphFrontend.updatePosition(Pair(-30, -30))
             }
             println("driven")
@@ -577,8 +574,8 @@ class Robot {
                 try {
                     Tree.addOrReplaceTileToTile(
                         GraphFrontend.currentPosition,
-                        GraphFrontend.visitedPositions.last(),
-                        GraphFrontend.getInverseDirection(),
+                        GraphFrontend.visitedPositions.last().first,
+                        GraphFrontend.visitedPositions.last().second,
                         tile
                     )
                 }catch (e: Exception){
