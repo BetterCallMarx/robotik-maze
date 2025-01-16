@@ -31,6 +31,7 @@ class MazePanel : JPanel() {
     }
 
     fun addTile(tile: Tile) {
+        // Erstelle die Liste der Wände aus den Tile-Eigenschaften
         val walls = mutableListOf(
             tile.northOpen,
             tile.eastOpen,
@@ -38,12 +39,24 @@ class MazePanel : JPanel() {
             tile.westOpen
         )
 
+        // Suche nach einem Raum mit den gleichen Koordinaten
+        val existingRoomIndex = rooms.indexOfFirst { it.position == mazeCoordToGuiCoord(tile.coordinates) }
 
-        val newRoom = Room(tile.color, walls, mazeCoordToGuiCoord(tile.coordinates))
-        println(newRoom.position)
-        rooms.add(newRoom)
+        if (existingRoomIndex >= 0) {
+            // Wenn der Raum bereits existiert, ersetze ihn
+            val existingRoom = rooms[existingRoomIndex]
+            existingRoom.color = tile.color  // Ersetze die Farbe des bestehenden Raums
+            existingRoom.walls = walls      // Ersetze die Wände
+        } else {
+            // Wenn der Raum nicht existiert, erstelle einen neuen Raum
+            val newRoom = Room(tile.color, walls, mazeCoordToGuiCoord(tile.coordinates))
+            rooms.add(newRoom)  // Füge den neuen Raum hinzu
+        }
+
+        // Repaint der Anzeige, um die Änderungen zu visualisieren
         repaint()
     }
+
 
     private fun mazeCoordToGuiCoord(coords: Pair<Int, Int>): Pair<Int, Int> {
         val originX = width / 2
@@ -134,5 +147,5 @@ class MazePanel : JPanel() {
     }
 
 
-    data class Room(val color: TileColor, val walls: List<Boolean>, val position: Pair<Int, Int>)
+    data class Room(var color: TileColor, var walls: List<Boolean>, val position: Pair<Int, Int>)
 }

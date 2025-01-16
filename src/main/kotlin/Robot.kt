@@ -78,7 +78,6 @@ class Robot {
         ) {
             if(it[0] as Int == angle){
                 drivenRight = true
-                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 OSCReceiver.unsubListener(pathRight)
             }else{
                 OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
@@ -89,8 +88,6 @@ class Robot {
         ) {
             if(it[0] as Int == angle){
                 drivenLeft = true
-                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
-
                 OSCReceiver.unsubListener(pathLeft)
             }else{
                 OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
@@ -100,21 +97,24 @@ class Robot {
 
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
-        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
+        while(!drivenRight && !drivenLeft && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
-        if(!drivenRight || !drivenLeft){
-            DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
-            throw Exception("Es konnte nicht gedreht werden")
-        }else {
+        if(!drivenRight && !drivenLeft){
+            DebugMessage.debugMessage = "Es konnte nicht  gefahren werden"
+            throw Exception("Es konnte nicht gefahren werden")
+        }
+
             if (angle > 0) {
+                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 GraphFrontend.updatePosition(Pair(30, 30))
             } else {
+                GraphFrontend.visitedPositions.add(GraphFrontend.currentPosition)
                 GraphFrontend.updatePosition(Pair(-30, -30))
             }
             println("driven")
             return true
-        }
+
     }
 
 
@@ -194,10 +194,10 @@ class Robot {
         }
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
-        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
+        while(!drivenRight && !drivenLeft && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
-        if(!drivenRight || !drivenLeft){
+        if(!drivenRight && !drivenLeft){
             DebugMessage.debugMessage = "Es konnte nicht um gedreht werden"
             throw Exception("Es konnte nicht gedreht werden")
         }
@@ -371,11 +371,11 @@ class Robot {
         try {
             for (d in directionsNeeded) {
 
-                /*
-                if(ultraSensorDistance() > 30){
+
+                if(ultraSensorDistance() < 300){
                     while(!positionSelf()){sleep(100)}
                 }
-                 */
+
 
                 while (GraphFrontend.facing.second != d) {
                     while(!turn(500, -187, 187)){
@@ -425,15 +425,22 @@ class Robot {
         if (distances.isNotEmpty() && color.isNotEmpty()) {
             val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))
             tile.printTile()
-            if (GraphFrontend.currentPosition == Pair(0, 0) && !Tree.rootSet) {
+            if ((GraphFrontend.currentPosition == Pair(0, 0)) && !Tree.rootSet) {
                 Tree.addRoot(tile)
             } else {
-                Tree.addOrReplaceTileToTile(
-                    GraphFrontend.currentPosition,
-                    GraphFrontend.visitedPositions.last(),
-                    GraphFrontend.getInverseDirection(),
-                    tile
-                )
+                try {
+
+
+                    Tree.addOrReplaceTileToTile(
+                        GraphFrontend.currentPosition,
+                        GraphFrontend.visitedPositions.last(),
+                        GraphFrontend.getInverseDirection(),
+                        tile
+                    )
+                }catch (e: Exception){
+                    println(e)
+                    return tile
+                }
             }
             return tile
         } else {

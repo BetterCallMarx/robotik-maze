@@ -79,6 +79,7 @@ object Tree {
 
             // Replace the old node in the map with the new node
             mazeCoordinateMap[tileCoordinate] = newNode
+            println("Node replaced")
         } else {
             // If the tile does not exist, use addTileToTile to add the new tile
             val parentNode = mazeCoordinateMap[parentCoordinate]
@@ -104,6 +105,7 @@ object Tree {
                 }
             }
             mazeCoordinateMap[tileCoordinate] = node
+            println("Node added")
         }
     }
 
@@ -114,6 +116,7 @@ object Tree {
         mazeCoordinateMap[tile.coordinates] = initNode
         rootSet = true
     }
+
 
 
     fun printTree() {
