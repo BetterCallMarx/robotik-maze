@@ -99,7 +99,7 @@ class Robot {
 
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/run/target", speed, angle)
-        while(!drivenRight || !drivenLeft && System.currentTimeMillis() - start < timeout) {
+        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
         if(!drivenRight || !drivenLeft){
@@ -148,11 +148,11 @@ class Robot {
         try {
             val start = System.currentTimeMillis()
             val timeout = 5000L
-            drive(250, 300)
+            drive2(250, 300)
             while (!touchSensorTouched() && System.currentTimeMillis() - start < timeout) {
                 sleep(10)
             }
-            drive(250, -150)
+            drive2(250, -150)
         }catch (e: Exception){
             DebugMessage.debugMessage = e.message.toString()
         }
@@ -193,7 +193,7 @@ class Robot {
         }
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/angle", 0)
         OSCSender(ipTarget, port).send("/$robotName/motor/$rightMotorPort$leftMotorPort/multirun/target", speed, angleRight, angleLeft)
-        while(!drivenRight || !drivenLeft && System.currentTimeMillis() - start < timeout) {
+        while((!drivenRight || !drivenLeft) && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
         if(!drivenRight || !drivenLeft){
