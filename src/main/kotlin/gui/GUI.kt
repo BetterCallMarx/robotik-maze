@@ -13,9 +13,13 @@ import javax.swing.*
 
 class GUI : JFrame() {
 
-    private val robot: Robot = Robot()
+    private val robot: Robot = Robot() //roboter objekt zur steurung
     private val mazePanel : MazePanel = MazePanel()
-    private var shiftPressed = false
+    private var shiftPressed = false// status ob die shift taste gedrückt ist
+
+    /**
+     * einstellungen für das fenster, fenstergröße, fensterrahmen, fixirte größe, layout
+     */
 
     init {
         title = "GUI"
@@ -25,56 +29,71 @@ class GUI : JFrame() {
         defaultCloseOperation = EXIT_ON_CLOSE
         layout = BorderLayout()
 
-        add(mazePanel, BorderLayout.CENTER)
+        add(mazePanel, BorderLayout.CENTER) // einsetzten des panels im zentrum des fensters
 
-        // Button Panel
-        val buttonPanel = JPanel(GridBagLayout()) // Using GridBagLayout for more control
+        /**
+         * Button Panel
+         */
+        val buttonPanel = JPanel(GridBagLayout())//bessere kontrolle
         addButtonControls(buttonPanel)
         add(buttonPanel, BorderLayout.SOUTH)
         isVisible = true
 
-        // Global key listener to detect Shift key press
+        // tasturlistener für shift key
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher { e ->
             when (e.id) {
                 KeyEvent.KEY_PRESSED -> if (e.keyCode == KeyEvent.VK_SHIFT) shiftPressed = true
                 KeyEvent.KEY_RELEASED -> if (e.keyCode == KeyEvent.VK_SHIFT) shiftPressed = false
             }
-            false // Returning false allows the event to propagate normally
+            false
         }
     }
 
+    /**
+     * steuerung der buttons
+     */
+
     private fun addButtonControls(panel: JPanel) {
         val gbc = GridBagConstraints()
-        gbc.anchor = GridBagConstraints.CENTER // Align to the center of grid cells
-        gbc.insets = Insets(5, 5, 5, 5) // Add spacing between buttons
-        gbc.fill = GridBagConstraints.HORIZONTAL // Ensure buttons fill horizontally
+        gbc.anchor = GridBagConstraints.CENTER //positon
+        gbc.insets = Insets(5, 5, 5, 5) // spacing
+        gbc.fill = GridBagConstraints.HORIZONTAL // position versichert horizontal
 
-        // Setze den Hintergrund des gesamten Button-Panels auf eine gewünschte Farbe
+        // panel auf weiß
         panel.background = Color(255,255,255);
 
-        // Create two sub-grids for left and right sections
-        val leftPanel = JPanel(GridBagLayout()) // Left grid for arrow buttons
-        val rightPanel = JPanel(GridBagLayout()) // Right grid for other buttons
+        // zwei sub grids für links und rechts
+        val leftPanel = JPanel(GridBagLayout()) // links pfeil buttons
+        val rightPanel = JPanel(GridBagLayout()) // rechts rest
 
-        // Add the buttons to the left panel (Arrow Buttons)
+        // hinzufügen von pfeil buttons links
         addArrowButtons(leftPanel, gbc)
-        // Add the buttons to the right panel (Other Buttons)
+        // andere buttons rechts
         addOtherButtons(rightPanel, gbc)
-        // Place the left and right panels in the main button panel
+        // plazierung der sub panels ins main panel
         gbc.gridx = 0
         gbc.gridy = 0
-        panel.add(leftPanel, gbc) // Left panel
+        panel.add(leftPanel, gbc) // linker panel
+
 
         gbc.gridx = 1
         gbc.gridy = 0
-        panel.add(rightPanel, gbc) // Right panel
+        panel.add(rightPanel, gbc) // rechter panel
     }
 
+
+    /**
+     * hinzufügen der arrow Buttons für das fahren (linker panel)
+     * oben fahren  = ^
+     * link drehung  = <
+     * rechts drehung = >
+     * unten fahren = v
+     */
     private fun addArrowButtons(panel: JPanel, gbc: GridBagConstraints) {
 
 
 
-        // Forward Button
+        // vorwärts Button
         val forward = JButton("^")
         forward.addActionListener {
             if (shiftPressed) {
@@ -88,7 +107,7 @@ class GUI : JFrame() {
         gbc.gridy = 0
         panel.add(forward, gbc)
 
-        // Left Button
+        // links Button
         val left = JButton("<")
         left.addActionListener {
             if (shiftPressed) {
@@ -102,7 +121,7 @@ class GUI : JFrame() {
         gbc.gridy = 1
         panel.add(left, gbc)
 
-        // Right Button
+        // rechts Button
         val right = JButton(">")
         right.addActionListener {
             if (shiftPressed) {
@@ -116,11 +135,11 @@ class GUI : JFrame() {
         gbc.gridy = 1
         panel.add(right, gbc)
 
-        // Back Button
+        // runter Button
         val back = JButton("v")
         back.addActionListener {
             if (shiftPressed) {
-                robot.drive2(500, -61)
+                robot.driveNoPosition(500, -61)
             } else {
                 robot.drive2(500, -612)
             }
@@ -131,9 +150,17 @@ class GUI : JFrame() {
         panel.add(back, gbc)
     }
 
+    /**
+     * hinzufügen ander Steuerungen (rechter panel)
+     * look = scannend er wände
+     * test = simuliertes laybrint in der GUI für tests
+     * quick = anzeigen des schnellste weges
+     * back = zurückfahren über den schnellsten weg
+     * pos = repositonierung des roboters
+     */
 
     private fun addOtherButtons(panel: JPanel, gbc: GridBagConstraints) {
-        // Turn Head Button
+        // scan Button (kopf bewegt sich)
         val turnHead = JButton("Look")
 
         turnHead.addActionListener {
@@ -151,7 +178,7 @@ class GUI : JFrame() {
         gbc.gridy = 0
         panel.add(turnHead, gbc)
 
-
+        //test button
         val test = JButton("Test")
         test.addActionListener {
 
@@ -209,7 +236,7 @@ class GUI : JFrame() {
         gbc.gridy = 1
         panel.add(test, gbc)
 
-        // Quickest Path Button
+        // schnellster weg button
         val quickestpath = JButton("Quickest")
         quickestpath.addActionListener {
             val colorsToVisit = setOf(TileColor.BLUE, TileColor.RED, TileColor.GREEN) // Colored tiles to visit
@@ -240,6 +267,7 @@ class GUI : JFrame() {
         gbc.gridy = 3
         panel.add(exit, gbc)
 
+        //repositons button
         val position = JButton("Pos")
         position.addActionListener {
             robot.positionSelf()

@@ -213,10 +213,10 @@ class Robot {
                 turned = true
                 OSCReceiver.unsubListener(path)
             }else{
-                OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
+                OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle,"hold")
             }
         }
-        OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle)
+        OSCSender(ipTarget, port).send("/$robotName/motor/$headMotorPort/run/target", speed, angle, "hold")
         while(!turned && System.currentTimeMillis() - start < timeout) {
             sleep(10)
         }
@@ -494,19 +494,21 @@ class Robot {
             // NORTH
             val distanceNorth = calculateAverageDistance()
             distances.add(Pair(distanceNorth, Direction.NORTH))
-
             // EAST
             turnHead(1000, 90)
+            sleep(100)
             val distanceEast = calculateAverageDistance()
             distances.add(Pair(distanceEast, Direction.EAST))
 
             // SOUTH
             turnHead(1000, 180)
+            sleep(100)
             val distanceSouth = calculateAverageDistance()
             distances.add(Pair(distanceSouth, Direction.SOUTH))
 
             // WEST
             turnHead(1000, -90)
+            sleep(100)
             val distanceWest = calculateAverageDistance()
             distances.add(Pair(distanceWest, Direction.WEST))
 
@@ -632,7 +634,7 @@ class Robot {
      * @return
      */
     fun getTile(): Tile {
-        val distances: MutableList<Pair<Int, Direction>> = completeHeadTurn()
+        val distances: MutableList<Pair<Int, Direction>> = completeHeadTurnAverage()
         val color = colorSensorColor()
         if (distances.isNotEmpty() && color.isNotEmpty()) {
             val tile: Tile = GraphFrontend.createTile(distances, GraphFrontend.colorToEnum(color))

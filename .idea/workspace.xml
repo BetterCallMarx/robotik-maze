@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="problem mit nodes erstellen und richtung gefixed">
+    <list default="true" id="893ea1c7-3719-4a43-b513-631ac4e9f374" name="Changes" comment="fixes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Robot.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/graphing/GraphFrontend.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/GUI.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/gui/MazePanel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +92,7 @@
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;integration__test&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Schule/Desktop/OscTester-main&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -256,10 +256,9 @@
       <workItem from="1736967694383" duration="5698000" />
       <workItem from="1737020770923" duration="4368000" />
       <workItem from="1737031518477" duration="10675000" />
-      <workItem from="1737102465760" duration="656000" />
-      <workItem from="1737132970491" duration="1787000" />
-      <workItem from="1737150905986" duration="102000" />
-      <workItem from="1737196059189" duration="1299000" />
+      <workItem from="1737122328915" duration="220000" />
+      <workItem from="1737126447504" duration="1013000" />
+      <workItem from="1737147783136" duration="3527000" />
     </task>
     <task id="LOCAL-00001" summary="init commit">
       <created>1733480350173</created>
