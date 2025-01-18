@@ -6,26 +6,24 @@ Dieses Projekt bietet eine grafische Benutzeroberfläche (GUI) zur Steuerung ein
 
 - IntelliJ IDEA (oder ein vergleichbares Tool)
 - Kotlin- und Java-Support
+- Der EV3 muss das [Lego OSC](https://github.com/WerthersEchte/legoOSC) Programm installiert haben.
 - Der Computer und der Roboter müssen sich im **gleichen WLAN-Netzwerk** befinden, um OSC-Signale austauschen zu können.
 
 ## Installation
 
-1. **Repository klonen**  
+1. **Repository klonen oder als .zip installieren**  
    Klone das Repository lokal, indem du folgenden Befehl ausführst:  
    ```bash
    git clone <URL-des-Repository>
    
 2.**Projekt öffnen**
 
-Öffne das geklonte Projekt in IntelliJ.
+Öffne das geklonte oder installierte Projekt in IntelliJ.
 
-3.**Abhängigkeiten sicherstellen**
+3.**Starten**
 
-Stelle sicher, dass Kotlin und Java korrekt in IntelliJ installiert sind. Falls nicht, installiere sie über die IDE.
-
-4.**Starten**
-
-Das Programm kann direkt in IntelliJ gestartet werden. Nutze dazu die bereitgestellte Run-Konfiguration oder erstelle eine neue.
+Das Programm kann direkt in IntelliJ gestartet werden.
+Der Roboter muss das Lego OSC Program laufen lassen.
 
 ## Buttons der GUI
 
