@@ -3,12 +3,24 @@ package graphing
 import enums.Direction
 import enums.TileColor
 
+/**
+ * Object das den Baum hält
+ *
+ * @constructor Create empty Tree
+ */
 object Tree {
-    //root of the node corresponds to the starting node, which is the entrance
     var root: Node? = null
     var rootSet = false
     private val mazeCoordinateMap = mutableMapOf<Pair<Int,Int>,Node>()
 
+    /**
+     * Funktion um Nodes miteinander zu verbinden
+     *
+     * @param tileCoordinate
+     * @param parentCoordinate
+     * @param directionParent
+     * @param tile
+     */
     fun addTileToTile(tileCoordinate: Pair<Int,Int>, parentCoordinate: Pair<Int,Int>, directionParent: Direction, tile: Tile){
 
         val parentNode = mazeCoordinateMap[parentCoordinate]?:throw IllegalArgumentException("Parent node at $parentCoordinate does not exist")
@@ -36,12 +48,18 @@ object Tree {
         mazeCoordinateMap[tileCoordinate] = node
     }
 
+    /**
+     * Nodes werden miteinander verbunden oder ersetzt
+     *
+     * @param tileCoordinate
+     * @param parentCoordinate
+     * @param directionParent
+     * @param newTile
+     */
     fun addOrReplaceTileToTile(tileCoordinate: Pair<Int, Int>, parentCoordinate: Pair<Int, Int>, directionParent: Direction, newTile: Tile) {
-        // Check if the tile already exists
         val existingNode = mazeCoordinateMap[tileCoordinate]
 
         if (existingNode != null) {
-            // If the tile exists, replace it
             val newNode = Node(newTile)
 
             // Disconnect the old tile from its neighbors
@@ -81,7 +99,7 @@ object Tree {
             mazeCoordinateMap[tileCoordinate] = newNode
             println("Node replaced")
         } else {
-            // If the tile does not exist, use addTileToTile to add the new tile
+
             val parentNode = mazeCoordinateMap[parentCoordinate]
                 ?: throw IllegalArgumentException("Parent node at $parentCoordinate does not exist")
             val node = Node(newTile)
@@ -109,7 +127,11 @@ object Tree {
         }
     }
 
-
+    /**
+     * Erstellen vom root
+     *
+     * @param tile
+     */
     fun addRoot(tile: Tile){
         val initNode = Node(tile)
         root = initNode
@@ -117,46 +139,18 @@ object Tree {
         rootSet = true
     }
 
-
-
-    fun printTree() {
-        if (root == null) {
-            println("The tree is empty.")
-            return
-        }
-
-        println("Maze Tree:")
-        printNode(root, mutableSetOf())
-    }
-
-    private fun printNode(node: Node?, visited: MutableSet<Pair<Int, Int>>) {
-        if (node == null || visited.contains(node.tile.coordinates)) return
-
-        // Mark this node as visited
-        visited.add(node.tile.coordinates)
-
-        // Print the current node's details
-        println("Node at ${node.tile.coordinates}:")
-        if (node.north != null) println("  North -> ${node.north?.tile?.coordinates}")
-        if (node.east != null) println("  East -> ${node.east?.tile?.coordinates}")
-        if (node.south != null) println("  South -> ${node.south?.tile?.coordinates}")
-        if (node.west != null) println("  West -> ${node.west?.tile?.coordinates}")
-
-        // Recursively print connected nodes
-        printNode(node.north, visited)
-        printNode(node.east, visited)
-        printNode(node.south, visited)
-        printNode(node.west, visited)
-    }
-
-
-
-
+    /**
+     * Algorhitmus um den kurzesten Weg zu finden, benutzt BFS
+     *
+     * @param startCoordinate
+     * @param colors
+     * @return
+     */
     fun findShortestPathThroughColorsAndReturn(
         startCoordinate: Pair<Int, Int>,
         colors: Set<TileColor>
     ): List<Pair<Int, Int>> {
-        // Ensure the starting node exists
+
         val startNode = mazeCoordinateMap[startCoordinate]
             ?: return emptyList()
 
@@ -182,7 +176,7 @@ object Tree {
                 remainingColors
             }
 
-            // Explore all neighbors
+
             val neighbors = listOf(
                 currentNode.north to Direction.NORTH,
                 currentNode.south to Direction.SOUTH,
@@ -200,16 +194,13 @@ object Tree {
                         Direction.WEST -> Pair(path.last().first + 30, path.last().second)
                     }
 
-                    // Add the neighbor to the queue with updated path and remaining colors
                     queue.add(Triple(neighbor, path + neighborCoordinate, updatedColors))
                 }
             }
         }
 
-        return emptyList() // No valid path found
+        return emptyList()
     }
-
-
 
 
 

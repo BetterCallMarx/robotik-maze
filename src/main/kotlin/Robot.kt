@@ -35,12 +35,12 @@ class Robot {
 
 
     /**
-     * Drive
+     * Funktion zum Fahren
      *
      * @param speed
      * @param angle
      * @return
-     *///for 30cm forward movement angle is 612, for backwards its -612. 500 is appropriate speed
+     */
     fun drive(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -91,7 +91,7 @@ class Robot {
     }
 
     /**
-     * Drive2
+     * Funktion zum Fahren, Unterschied zu drive ist die Abfrage auf den Listener. logisch und ist genauer, während logisches oder besser für autonomes Fahren funktionert
      *
      * @param speed
      * @param angle
@@ -148,7 +148,7 @@ class Robot {
     }
 
     /**
-     * Drive no position
+     * Fahren ohne Postion zu aktualisieren
      *
      * @param speed
      * @param angle
@@ -199,8 +199,12 @@ class Robot {
     }
 
 
-
-    //one headturn
+    /**
+     * Turn head
+     *
+     * @param speed
+     * @param angle
+     */
     private fun turnHead(speed: Int, angle: Int) {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -248,13 +252,13 @@ class Robot {
 
 
     /**
-     * Turn2
+     * Funktion zum umdrehen
      *
      * @param speed
      * @param angleRight
      * @param angleLeft
      * @return
-     *///for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
+     */
     fun turn2(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -304,7 +308,7 @@ class Robot {
     }
 
     /**
-     * Turn no direction
+     * Drehen ohne Richtung anzupassen
      *
      * @param speed
      * @param angleRight
@@ -354,7 +358,7 @@ class Robot {
     }
 
     /**
-     * Turn
+     * Drehen Unterschied zu turn2 ist der Selbe wie auf drive zu drive2
      *
      * @param speed
      * @param angleRight
@@ -409,6 +413,11 @@ class Robot {
         return true
     }
 
+    /**
+     * Color sensor color
+     *
+     * @return
+     */
     private fun colorSensorColor(): String {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -429,6 +438,11 @@ class Robot {
         return color
     }
 
+    /**
+     * Touch sensor touched
+     *
+     * @return
+     */
     private fun touchSensorTouched(): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -448,6 +462,11 @@ class Robot {
         return touched
     }
 
+    /**
+     * Ultra sensor distance
+     *
+     * @return
+     */
     private fun ultraSensorDistance(): Int {
         var distance: Int = -1
         try {
@@ -474,6 +493,11 @@ class Robot {
         return distance
     }
 
+    /**
+     * Komplete Umdrehung und Erfassung von Distanzen
+     *
+     * @return
+     */
     private fun completeHeadTurnAverage(): MutableList<Pair<Int, Direction>> {
         val distances: MutableList<Pair<Int, Direction>> = mutableListOf()
         val numSamples = 3 // Number of samples to average
@@ -522,6 +546,11 @@ class Robot {
         return distances
     }
 
+    /**
+     * Komplete Umdrehung und Erfassung von Distanzen
+     *
+     * @return
+     */
     private fun completeHeadTurn(): MutableList<Pair<Int,Direction>> {
         val distances: MutableList<Pair<Int,Direction>> = mutableListOf()
         try {
@@ -575,6 +604,11 @@ class Robot {
         OSCSender(ipTarget, port).send("/$robotName/touch/$touchSensorPort/onchange/stop")
     }
 
+    /**
+     * Funktion zum autonomen herausfahren
+     *
+     * @param directionsNeeded
+     */
     private fun driveToExit(directionsNeeded: List<Pair<Int, Int>>){
         try {
             for (d in directionsNeeded) {
@@ -607,7 +641,7 @@ class Robot {
     }
 
     /**
-     * Drive to exit retry
+     * wrapper funktion zum autonemen Herausfahren, bei exceptions wird die driveToExit funktion neu aufgerufen
      *
      */
     fun driveToExitRetry(){
@@ -629,7 +663,7 @@ class Robot {
     }
 
     /**
-     * Get tile
+     * Erfasse Tile und füge diesen zum Baum hinzu
      *
      * @return
      */

@@ -7,7 +7,7 @@ import DEBUG
 import kotlin.concurrent.thread
 
 
-//TODO Data class member variable welche mittels getter und setter
+
 
 object OSCReceiver {
     var port: Int = -1
@@ -38,7 +38,6 @@ object OSCReceiver {
             thread { receiver.startListening() }
 
             this.port = port
-            println("hallo")
         }
     }
 
@@ -50,18 +49,29 @@ object OSCReceiver {
     }
 
 
-
-
+    /**
+     * Listener list
+     */
     private val listenerList: MutableMap<String,(args: List<Any>) -> Unit > = mutableMapOf()
     fun subListener(path: String, callBack: (args: List<Any>) -> Unit){
         listenerList[path] = callBack
     }
 
+    /**
+     * Unsub listener
+     *
+     * @param path
+     */
     fun unsubListener(path: String){
         listenerList.remove(path)
     }
 
-
+    /**
+     * New message
+     *
+     * @param path
+     * @param args
+     */
     private fun newMessage(path: String, args: List<Any>) {
         listenerList.getOrDefault(path,{if(DEBUG) println("unknown: $path: $args") }).invoke(args)
     }

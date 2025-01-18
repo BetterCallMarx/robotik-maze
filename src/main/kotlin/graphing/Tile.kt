@@ -2,6 +2,17 @@ package graphing
 
 import enums.TileColor
 
+/**
+ * Tile Klasse
+ *
+ * @property northOpen
+ * @property eastOpen
+ * @property southOpen
+ * @property westOpen
+ * @property color
+ * @property coordinates
+ * @constructor Create empty Tile
+ */
 class Tile(
     val northOpen: Boolean,
     val eastOpen: Boolean,
@@ -10,12 +21,18 @@ class Tile(
     val color: TileColor,
     val coordinates: Pair<Int,Int>
 ) {
-    //whether an opening has been visited or not
+    /**
+     * Besuchte Seiten
+     */
     var northVisited: Boolean = false
     var eastVisited: Boolean = false
     var southVisited: Boolean = false
     var westVisited: Boolean = false
 
+    /**
+     * Print tile
+     *
+     */
     fun printTile(){
         println("$northOpen $eastOpen $southOpen $westOpen $color $coordinates")
 

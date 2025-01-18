@@ -3,7 +3,11 @@ package graphing
 import enums.Direction
 import enums.TileColor
 
-//FrontEnd for Graphbased SLAMing, creates Nodes and Edges, based on sensor data
+/**
+ * Graph frontend
+ * Object welches benutzt wird, um das SLAMing zu verwalten
+ * @constructor Create empty Graph frontend
+ */
 object GraphFrontend {
 
 
@@ -17,6 +21,13 @@ object GraphFrontend {
     var visitedPositions : MutableList<Pair<Pair<Int,Int>,Direction>> = mutableListOf() //add position of tile to lastPosition to keep track of visited tiles and get last one
     var currentPosition: Pair<Int,Int> = startPosition
 
+    /**
+     * Funktion um ein Tile Objekt zu erstellen
+     *
+     * @param distances Ultraschallsensor Daten aus den jeweiligen Richtungen
+     * @param color Farbe des Bodens
+     * @return
+     */
     fun createTile(distances:List<Pair<Int,Direction>>,color: TileColor): Tile {
         //adjust relative Direction to absolute direction
         val absoluteDistances: MutableList<Pair<Int,Direction>> = mutableListOf(
@@ -48,11 +59,22 @@ object GraphFrontend {
         return Tile(walls[0],walls[1],walls[2],walls[3],color, currentPosition)
     }
 
+    /**
+     * Gibt die entgegen gesetze Richtung wieder, in welche der Roboter guckt.
+     *
+     * @return
+     */
     fun getInverseDirection(): Direction{
         val currentIndex = directions.indexOf(facing)
         return directions[(currentIndex+2) % directions.size].first
     }
 
+    /**
+     * Wandelt die relative Ausrichtung des Roboters in absolute Richtung um.
+     *
+     * @param headDirection
+     * @return
+     */
     private fun getAbsoluteDirection(headDirection: Direction):Direction{
         val currentIndex = directions.indexOf(facing)
 
@@ -66,22 +88,40 @@ object GraphFrontend {
         }
     }
 
-
+    /**
+     * Funktion zum Aktualisieren der Position
+     *
+     * @param odometry
+     */
     fun updatePosition(odometry : Pair<Int,Int>){
         val distance = PairArithmetic.multiply(facing.second,odometry)
         currentPosition = PairArithmetic.add(distance, currentPosition)
     }
+
+    /**
+     * Die Ausrichtung wird angepasst, wenn sich nach links gedreht wird.
+     *
+     */
     fun turnWest() {
         val currentIndex = directions.indexOf(facing)
         facing = directions[(currentIndex - 1 + directions.size) % directions.size]
     }
 
-
+    /**
+     * Die Ausrichtung wird angepasst, wenn sich nach links gedreht wird.
+     *
+     */
     fun turnEast(){
         val currentIndex = directions.indexOf(facing)
         facing = directions[(currentIndex + 1) % directions.size]
     }
 
+    /**
+     * String output vom Farbsensor werden in Enums umgewandelt
+     *
+     * @param color
+     * @return
+     */
     fun colorToEnum(color: String):TileColor{
         return when (color) {
             "blue" -> TileColor.BLUE
@@ -92,10 +132,23 @@ object GraphFrontend {
         }
     }
 
-    //calculate the needed Direction from two Positions
+    /**
+     * Funktion zum Ausrechnen von Richtung, von zwei Positionen
+     *
+     * @param oldPos
+     * @param newPos
+     * @return
+     */
     private fun calculateDirection(oldPos: Pair<Int, Int>, newPos: Pair<Int, Int>): Pair<Int, Int> {
         return PairArithmetic.divide(PairArithmetic.subtract(newPos, oldPos), Pair(30, 30))
     }
+
+    /**
+     * Funktion die eine Liste von Koordinaten in eine Liste von Richtungen umrechnet
+     *
+     * @param toVisit Liste an Koordinaten
+     * @return
+     */
 
     fun getTotalDirections(toVisit :List<Pair<Int,Int>>): List<Pair<Int, Int>> {
         //list of direction that connect the tiles that are being visited directions[i] is the direction from toVisit[i] to toVisit[i+1]
