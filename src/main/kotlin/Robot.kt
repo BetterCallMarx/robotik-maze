@@ -9,7 +9,11 @@ import gui.DebugMessage
 import java.lang.Thread.sleep
 
 
-//TODO für jeden Befehl eine Funktion
+/**
+ * Robot
+ *
+ * @constructor Create empty Robot
+ *///TODO für jeden Befehl eine Funktion
 class Robot {
     lateinit var direction: Direction
     private val robotName: String = "robot"
@@ -30,7 +34,13 @@ class Robot {
     }
 
 
-    //for 30cm forward movement angle is 612, for backwards its -612. 500 is appropriate speed
+    /**
+     * Drive
+     *
+     * @param speed
+     * @param angle
+     * @return
+     *///for 30cm forward movement angle is 612, for backwards its -612. 500 is appropriate speed
     fun drive(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -80,6 +90,13 @@ class Robot {
 
     }
 
+    /**
+     * Drive2
+     *
+     * @param speed
+     * @param angle
+     * @return
+     */
     fun drive2(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -130,6 +147,13 @@ class Robot {
 
     }
 
+    /**
+     * Drive no position
+     *
+     * @param speed
+     * @param angle
+     * @return
+     */
     fun driveNoPosition(speed: Int, angle: Int) : Boolean{
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -202,6 +226,11 @@ class Robot {
 
     }
 
+    /**
+     * Position self
+     *
+     * @return
+     */
     fun positionSelf():Boolean{
         try {
             val start = System.currentTimeMillis()
@@ -218,8 +247,14 @@ class Robot {
     }
 
 
-
-    //for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
+    /**
+     * Turn2
+     *
+     * @param speed
+     * @param angleRight
+     * @param angleLeft
+     * @return
+     *///for 90 degreee turn optimal is -187,187 for a right turn and 187,-187 for a left turn
     fun turn2(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -268,6 +303,14 @@ class Robot {
         return true
     }
 
+    /**
+     * Turn no direction
+     *
+     * @param speed
+     * @param angleRight
+     * @param angleLeft
+     * @return
+     */
     fun turnNoDirection(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -310,6 +353,14 @@ class Robot {
         return true
     }
 
+    /**
+     * Turn
+     *
+     * @param speed
+     * @param angleRight
+     * @param angleLeft
+     * @return
+     */
     fun turn(speed: Int, angleRight: Int, angleLeft: Int): Boolean {
         val start = System.currentTimeMillis()
         val timeout = 2500L
@@ -500,7 +551,12 @@ class Robot {
     }
 
     private val touchListenerPath: String = "/$robotName/touch/$touchSensorPort/changed/pressed"
-     fun subTouchListener(){
+
+    /**
+     * Sub touch listener
+     *
+     */
+    fun subTouchListener(){
         OSCReceiver.subListener(touchListenerPath
         ) {
             println(it)
@@ -508,6 +564,10 @@ class Robot {
         OSCSender(ipTarget, port).send("/$robotName/touch/$touchSensorPort/onchange/start")
     }
 
+    /**
+     * Unsub touch listener
+     *
+     */
     fun unsubTouchListener() {
         OSCReceiver.unsubListener(touchListenerPath)
         OSCSender(ipTarget, port).send("/$robotName/touch/$touchSensorPort/onchange/stop")
@@ -544,6 +604,10 @@ class Robot {
         }
     }
 
+    /**
+     * Drive to exit retry
+     *
+     */
     fun driveToExitRetry(){
         var success = false
         val maxRetries = 5
@@ -562,6 +626,11 @@ class Robot {
         }
     }
 
+    /**
+     * Get tile
+     *
+     * @return
+     */
     fun getTile(): Tile {
         val distances: MutableList<Pair<Int, Direction>> = completeHeadTurn()
         val color = colorSensorColor()

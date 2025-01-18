@@ -1,23 +1,11 @@
 package graphing
 
-import Robot
 import enums.Direction
 import enums.TileColor
 
 //FrontEnd for Graphbased SLAMing, creates Nodes and Edges, based on sensor data
 object GraphFrontend {
-    /*
-    Initiale Position ist die Position, an welcher man beginnt, dieses ist 28/2 cm vom Eingang entfernt und mittig zu diesem auf der y achse
-    TODO wir sind immer in der mitte eines feldes 0,0 ist die mitte des eingangs, also starten wir 0,-30
-    TODO Der Mittelpunkt des Roboters ist zwischen den rädern, weeder vorne oder mittig
-    TODO das nutzen um auf der GUI wände zu platzieren
-    TODO ACTUAL TODO TREE FÜR DEN SHORTEST WAY OUT MACHEN KA WIE MAN DA BEIDES VERBINDET WENN MAN BACKTRACKED
 
-    TODO Für bericht: position wird mit der richtung multipliziert und der entfernung errechnet, da eine übersicht machen
-    TODO da wir keine perfekte 90 drehung und ausrichtung haben, repositioned wir ihn manuell
-    TODO der einfachhalters halber wird bei jeder Drehung die direction angepoasst indem durch eine liste mit vorgefertigten direction iteriert wird
-    TODO relative auf absolute Position der Wand wir mittels offset erhalten
-    */
 
     private val startPosition: Pair<Int,Int> = Pair(0,-30) //robot start at position 0,-30
     private val facingNorth : Pair<Direction,Pair<Int,Int>> = Pair(Direction.NORTH,Pair(0,1))

@@ -214,7 +214,9 @@ class GUI : JFrame() {
         quickestpath.addActionListener {
             val colorsToVisit = setOf(TileColor.BLUE, TileColor.RED, TileColor.GREEN) // Colored tiles to visit
             val path = Tree.findShortestPathThroughColorsAndReturn(GraphFrontend.currentPosition, colorsToVisit)
+            val dir = GraphFrontend.getTotalDirections(path)
             println("Shortest Path: $path")
+            println("Shortest Path: $dir")
             if (path.isEmpty()) {
                 DebugMessage.debugMessage = "Kein gültiger Weg gefunden"
             } else {
